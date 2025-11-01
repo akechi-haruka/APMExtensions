@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <RootNamespace>Haruka.Arcade.EXMoney</RootNamespace>
-        <AssemblyVersion>0.1</AssemblyVersion>
+        <AssemblyVersion>0.1.1</AssemblyVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 

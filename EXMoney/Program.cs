@@ -121,10 +121,13 @@ class Program {
 
             Vfd.Reset();
 
-            ret = Vfd.GetVersion(out string version);
-            if (ret != DeviceStatus.OK) {
-                Logging.Main.LogError("Error communicating with VFD: {s}", ret);
-                return 1;
+            string version = "<unknown>";
+            if (!options.SkipVfdVersionRead) {
+                ret = Vfd.GetVersion(out version);
+                if (ret != DeviceStatus.OK) {
+                    Logging.Main.LogError("Error communicating with VFD: {s}", ret);
+                    return 1;
+                }
             }
 
             Vfd.SetEncoding(VFDEncoding.SHIFT_JIS);

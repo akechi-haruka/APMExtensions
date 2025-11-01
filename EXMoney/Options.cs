@@ -55,6 +55,10 @@ namespace Haruka.Arcade.EXMoney {
         [UsedImplicitly]
         public bool WaitUntilBlock { get; set; }
 
+        [Option("skip-vfd-version-read", Required = false, HelpText = "Skips attempting to read VFD version data")]
+        [UsedImplicitly]
+        public bool SkipVfdVersionRead { get; set; }
+
         [Value(0, MetaName = "AppConfig", Required = true, HelpText = "The app.json file of the played game.")]
         [UsedImplicitly]
         public string AppConfig { get; set; }
