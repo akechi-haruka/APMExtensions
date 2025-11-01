@@ -26,6 +26,113 @@ namespace APMCoreFixes {
             return true;
         }
 
+        private static String UpdateOptionPath(string original_path) {
+            string game_path = Path.GetDirectoryName(original_path);
+            ApmCoreFixes.Log.LogInfo("Directory is: " + game_path);
+
+            if (game_path.StartsWith(@"C:\Mount\Option")) {
+                ApmCoreFixes.Log.LogDebug("Default option path detected: " + game_path);
+                IniFile segatools = new IniFile("segatools.ini");
+                bool vfs_disabled = "0".Equals(segatools.Read("enabled", "vfs"));
+                string vfs_option = segatools.Read("option", "vfs");
+                if (!vfs_disabled && !String.IsNullOrWhiteSpace(vfs_option)) {
+                    game_path = game_path.Replace(@"C:\Mount\Option", vfs_option);
+                    ApmCoreFixes.Log.LogInfo("Path adjusted to " + game_path);
+                }
+            }
+
+            return game_path;
+        }
+
+        private static bool DeleteVirtualDrive(string letter) {
+            ApmCoreFixes.Log.LogDebug("Deleting virtual drive (if any)");
+            try {
+                Process p = Process.Start(new ProcessStartInfo("subst.exe", letter + ": /D") {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                });
+                p.ErrorDataReceived += P_ErrorDataReceived;
+                p.OutputDataReceived += P_OutputDataReceived;
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
+                p.WaitForExit();
+                return true;
+            } catch (Exception ex) {
+                ApmCoreFixes.Log.LogError("Failed to set virtual drive: " + ex);
+                Error.Set((int)ErrorNumber.CommonUnexpectedGameProgramFailure);
+                return false;
+            }
+        }
+
+        private static bool SetVirtualDrive(string letter, string game_path) {
+            ApmCoreFixes.Log.LogDebug("Setting virtual drive");
+            try {
+                Process p = Process.Start(new ProcessStartInfo("subst.exe", letter + ": " + game_path) {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                });
+                p.ErrorDataReceived += P_ErrorDataReceived;
+                p.OutputDataReceived += P_OutputDataReceived;
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
+                p.WaitForExit();
+                if (p.ExitCode != 0) {
+                    throw new Exception("Return code of subst is " + p.ExitCode);
+                }
+
+                return true;
+            } catch (Exception ex) {
+                ApmCoreFixes.Log.LogError("Failed to set virtual drive: " + ex);
+                Error.Set((int)ErrorNumber.CommonUnexpectedGameProgramFailure);
+                return false;
+            }
+        }
+
+        [HarmonyPrefix, HarmonyPatch(typeof(Apm.System.Setup.SceneManager), "Update")]
+        public static bool Update(Apm.System.Setup.SceneManager __instance) {
+            if (!ApmCoreFixes.ConfigUseBatchLaunchSystem.Value) {
+                return true;
+            }
+
+            if (__instance.state != Apm.System.Setup.SceneManager.State.StartGame) {
+                return true;
+            }
+
+            ApmCoreFixes.Log.LogInfo("Launching " + __instance.subGameId + "...");
+            AppInfo game = AppListManager.GetInstance().Info.List.Find(p => p.subGameId == __instance.subGameId);
+            if (game == null) {
+                ApmCoreFixes.Log.LogError("No such game entry: " + __instance.subGameId);
+                Error.Set((int)ErrorNumber.ApmUnexpectedGameProgramFailure);
+                return false;
+            }
+
+            string game_path = UpdateOptionPath(game.paths.images.Original);
+
+            if (!File.Exists(Path.Combine(game_path, "game.bat"))) {
+                ApmCoreFixes.Log.LogWarning("No game.bat in root directory found, falling back to actual start routine!");
+                return true;
+            }
+
+            DeleteVirtualDrive("W");
+            if (!SetVirtualDrive("W", game_path)) {
+                return false;
+            }
+
+            ApmCoreFixes.Log.LogDebug("Virtual drive set");
+
+            __instance.state = Apm.System.Setup.SceneManager.State.WaitStartGame;
+            ApmCoreFixes.Log.LogDebug("OnMountEnd");
+            __instance.OnMountEnd(true);
+            ApmCoreFixes.Log.LogDebug("OnStartGameEnd");
+            __instance.OnStartGameEnd(true);
+            ApmCoreFixes.Log.LogDebug("OK");
+            return false;
+        }
+
         [HarmonyPrefix, HarmonyPatch(typeof(SceneManager), "GameStart")]
         public static bool GameStart(string subGameId, string version, AppAdditionalInfo info, SceneManager __instance) {
             if (!ApmCoreFixes.ConfigUseBatchLaunchSystem.Value) {
@@ -40,19 +147,7 @@ namespace APMCoreFixes {
                 return false;
             }
 
-            string game_path = Path.GetDirectoryName(game.paths.images.Original);
-            ApmCoreFixes.Log.LogInfo("Directory is: " + game_path);
-
-            if (game_path.StartsWith(@"C:\Mount\Option")) {
-                ApmCoreFixes.Log.LogDebug("Default option path detected: " + game_path);
-                IniFile segatools = new IniFile("segatools.ini");
-                bool vfs_disabled = "0".Equals(segatools.Read("enabled", "vfs"));
-                string vfs_option = segatools.Read("option", "vfs");
-                if (!vfs_disabled && !String.IsNullOrWhiteSpace(vfs_option)) {
-                    game_path = game_path.Replace(@"C:\Mount\Option", vfs_option);
-                    ApmCoreFixes.Log.LogInfo("Path adjusted to " + game_path);
-                }
-            }
+            string game_path = UpdateOptionPath(game.paths.images.Original);
 
             if (!File.Exists(Path.Combine(game_path, "game.bat"))) {
                 ApmCoreFixes.Log.LogWarning("No game.bat in root directory found, falling back to actual start routine!");
@@ -61,25 +156,8 @@ namespace APMCoreFixes {
 
             Thread.Sleep(1000); // let sound effect finish
 
-            ApmCoreFixes.Log.LogDebug("Setting virtual drive");
-            try {
-                Process p = Process.Start(new ProcessStartInfo("subst.exe", "W: " + game_path) {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
-                });
-                p.ErrorDataReceived += P_ErrorDataReceived;
-                p.OutputDataReceived += P_OutputDataReceived;
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
-                p.WaitForExit();
-                if (p.ExitCode != 0) {
-                    throw new Exception("Return code of subst is " + p.ExitCode);
-                }
-            } catch (Exception ex) {
-                ApmCoreFixes.Log.LogError("Failed to set virtual drive: " + ex);
-                Error.Set((int)ErrorNumber.CommonUnexpectedGameProgramFailure);
+            DeleteVirtualDrive("W");
+            if (!SetVirtualDrive("W", game_path)) {
                 return false;
             }
 
