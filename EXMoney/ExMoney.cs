@@ -43,7 +43,9 @@ public class ExMoney {
 
     private void ApiOnOnConnectedChange(bool obj) {
         if (!alive && obj) {
-            SetVfdIdleText();
+            if (readerBlockedOnce || !options.WaitUntilBlock) {
+                SetVfdIdleText();
+            }
         }
 
         alive = obj;
