@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ using HarmonyLib;
 using static ABaaSGs;
 
 namespace APMCoreFixes {
-    public class ABaaSGsPatches {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    class ABaaSGsPatches {
+        // add x_apmcf_folders for servers to unlock games
         [HarmonyPostfix, HarmonyPatch(typeof(ABaaSGs), "downloadAppData", typeof(byte), typeof(string), typeof(Action<ABAASGS_STATUS, string>))]
         static IEnumerator downloadAppData(IEnumerator result, ABaaSGs __instance, byte requestNo, string requestJson, Action<ABAASGS_STATUS, string> callback) {
             if (!ApmCoreFixes.ConfigAddXFolders.Value) {

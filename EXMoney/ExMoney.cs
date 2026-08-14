@@ -13,7 +13,7 @@ public class ExMoney {
     private readonly SegApi api;
     private readonly ShareMemoryAccessor memory;
     private readonly ConfigParser appConfig;
-    private readonly VFD_GP1232A02A vfd;
+    private readonly VfdGp1232A02A vfd;
     private readonly MoneyBrand[] brands;
     private readonly Options options;
 
@@ -22,13 +22,14 @@ public class ExMoney {
     private bool readerBlockedOnce;
     private PaymentProcess payment;
 
-    public ExMoney(SegApi api, VFD_GP1232A02A vfd, MoneyBrand[] brands, ShareMemoryAccessor memory, ConfigParser appConfig, Options options) {
+    public ExMoney(SegApi api, VfdGp1232A02A vfd, MoneyBrand[] brands, ShareMemoryAccessor memory, ConfigParser appConfig, Options options) {
         this.vfd = vfd;
         this.brands = brands;
         this.api = api;
         this.memory = memory;
         this.appConfig = appConfig;
         this.options = options;
+        this.alive = !options.WaitUntilBlock;
     }
 
     public void Start() {

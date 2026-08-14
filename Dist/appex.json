@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "exit": {
+    "kill": false,
+    "kill_process_name_list": [
+      "dummy.exe"
+    ]
+  },
+  "guide": {
+    "width": 800,
+    "height": 332,
+    "pages": [
+      {
+        "title": "title message",
+        "text": "text",
+        "file": "logo.png",
+        "align": "center",
+        "content": {
+          "align": "topleft",
+          "buttons": [
+            {
+              "x": 0,
+              "y": 0,
+              "width": 200,
+              "height": 40,
+              "target": 3,
+              "center": false,
+              "text": "Game Mechanics"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

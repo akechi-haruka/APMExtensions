@@ -1,39 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using BepInEx;
 using BepInEx.Configuration;
+using JetBrains.Annotations;
 
 namespace Haruka.Arcade.APMHeadbanana {
-    [BepInPlugin("eu.haruka.apm.bananaphone", "HeadbananaLink", "1.1")]
+    [BepInPlugin("eu.haruka.apm.bananaphone", "HeadbananaLink", "1.3")]
     public class Bananaphone : BaseUnityPlugin {
-        [DllImport("apmHeadphoneVolume", EntryPoint = "apmHeadbananaVersionGet")]
-        private static extern int ApmHeadbananaVersionGet();
+        public ConfigEntry<string> ConfigChannelList;
+        public ConfigEntry<bool> ConfigFullRange;
 
-        [DllImport("apmHeadphoneVolume", EntryPoint = "apmHeadphoneVolumeGet")]
-        private static extern float ApmHeadphoneVolumeGet();
+        private static int version;
 
-        [DllImport("apmHeadphoneVolume", EntryPoint = "apmHeadphoneVolumeSet")]
-        private static extern void ApmHeadphoneVolumeSet(float volume);
+        public static bool IsWorking {
+            get { return version > 0; }
+        }
 
-        [DllImport("apmHeadphoneVolume", EntryPoint = "apmHeadphoneChannelsSet")]
-        private static extern void ApmHeadphoneChannelsSet([MarshalAs(UnmanagedType.LPArray)] int[] chanels, int len);
-
-        [DllImport("apmHeadphoneVolume", EntryPoint = "apmHeadphoneVolumeSetFullRange")]
-        private static extern void ApmHeadphoneVolumeSetFullRange(bool full_range);
-
-        private ConfigEntry<string> ConfigChannelList;
-        private ConfigEntry<bool> ConfigFullRange;
-        private int version;
-
+        [UsedImplicitly]
         public void Awake() {
             ConfigChannelList = Config.Bind("General", "Headphone Channels", "2,3", "A comma seperated list of channels that should be manipulated by APMHeadbanana");
             ConfigFullRange = Config.Bind("General", "Use Full Range", false, "By default, the headphone audio slider only goes up to 50% system volume, this will make it go up to 100%. Requires version 2.");
             ConfigChannelList.SettingChanged += ConfigChannelList_SettingChanged;
             ConfigFullRange.SettingChanged += ConfigChannelList_SettingChanged;
 
-            version = ApmHeadbananaVersionGet();
             try {
+                version = Native.ApmHeadbananaVersionGet();
                 Logger.LogInfo("BANANA: version " + version);
             } catch {
                 Logger.LogError("NO BANANA.");
@@ -58,14 +49,14 @@ namespace Haruka.Arcade.APMHeadbanana {
             }
 
             if (channels.Count > 0) {
-                ApmHeadphoneChannelsSet(channels.ToArray(), channels.Count);
+                Native.ApmHeadphoneChannelsSet(channels.ToArray(), channels.Count);
                 Logger.LogDebug("Channel list updated");
             } else {
                 Logger.LogError("Channel list is empty");
             }
 
             if (version >= 2) {
-                ApmHeadphoneVolumeSetFullRange(ConfigFullRange.Value);
+                Native.ApmHeadphoneVolumeSetFullRange(ConfigFullRange.Value);
             }
         }
     }

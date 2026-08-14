@@ -1,0 +1,63 @@
+{
+  "debug": false,
+  "touchSetting": {
+    "samplingCount": 3,
+    "tapDistance": 20.0
+  },
+  "ledSetting": {
+    "portNumber": 2,
+    "colors": [
+      "#0000FFFF",
+      "#00FF00FF",
+      "#FFFF00FF",
+      "#FF00FFFF",
+      "#FF2F00FF",
+      "#FF0010FF",
+      "#FFAE6FFF",
+      "#00FF34FF",
+      "#00FFFFFF",
+      "#FF0000FF"
+    ],
+    "errorColor": "#FF0000FF",
+    "interval": 4.0
+  },
+  "setupSetting": {
+    "imageRootPath": "C:\\Mount\\Option",
+    "apmImageFilePath": "T:\\",
+    "driveT": "T",
+    "driveY": "Y",
+    "alwaysLoadAppList": false,
+    "alwaysShowSetupStatus": false,
+    "emoneyUiPath": "X:\\emoneyUI.exe"
+  },
+  "setupDebugSetting": {
+    "showDebugWindow": true,
+    "bootApplication": false
+  },
+  "gameSelectSetting": {
+    "advertizeTime": 20.0
+  },
+  "gameSelectDebugSetting": {
+    "showDebugWindow": true,
+    "bootApplication": false
+  },
+  "subSystemTestDebugSetting": {
+    "showDebugWindow": true
+  },
+  "subSystemTestSetting": {
+    "touchPointsColors": [
+      "#FF0000FF",
+      "#00FF00FF",
+      "#0000FFFF",
+      "#FFFF00FF",
+      "#00FFFFFF",
+      "#FF000080",
+      "#00FF0080",
+      "#0000FF80",
+      "#FFFF0080",
+      "#00FFFF80"
+    ],
+    "touchLineWidth": 5,
+    "useMouseInput": true
+  }
+}

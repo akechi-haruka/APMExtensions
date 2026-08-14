@@ -17,7 +17,6 @@ namespace Haruka.Arcade.EXMoney.Debugging {
         /// </summary>
         public static ILogger Main { get; private set; }
 
-        public static ILogger SegaLib { get; private set; }
         public static ILogger SegApi { get; private set; }
 
         /// <summary>
@@ -45,7 +44,6 @@ namespace Haruka.Arcade.EXMoney.Debugging {
 
             Main = Factory.CreateLogger("Main");
             SegApi = Factory.CreateLogger("API");
-            SegaLib = Factory.CreateLogger("Hardware");
 
             Main.LogInformation("Logging started.");
         }

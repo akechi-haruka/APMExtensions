@@ -43,13 +43,13 @@ namespace Haruka.Arcade.EXMoney {
         public EMoneyResultStatus Status { get; private set; } = EMoneyResultStatus.Fail;
 
         private Thread executor;
-        private VFD_GP1232A02A vfd;
+        private VfdGp1232A02A vfd;
         private SegApi api;
         private ExMoney exmoney;
         private byte[] lastScannedCard;
         private MoneyBrand[] brands;
 
-        public PaymentProcess(ExMoney exmoney, VFD_GP1232A02A vfd, SegApi api, MoneyBrand[] brands) {
+        public PaymentProcess(ExMoney exmoney, VfdGp1232A02A vfd, SegApi api, MoneyBrand[] brands) {
             this.vfd = vfd;
             this.brands = brands;
             this.api = api;

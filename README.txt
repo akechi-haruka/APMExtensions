@@ -1,5 +1,5 @@
 APMCoreFixes / EMoneyUILink
-2024-2025 Haruka
+2024-2026 Haruka
 Licensed under GPLv3.
 
 See also: https://github.com/akechi-haruka/APMv3MenuTranslation
@@ -13,22 +13,33 @@ Adds some QoL features to the launcher.
 * Show mouse cursor
 * Send the server the list of games installed (so it can return the "allowed" status for all of them)
 * Add support for an analog IO4 device
+ - Replace daemon_config\common.json with this file https://gist.github.com/akechi-haruka/902c59511078269dbb132687e6e5cb2b
+ - Edit the bit indexes depending on your IO4 board. The given file was made for F/GOA wiring.
 * Skip Japan warning
-* Use root directory instead of App directory for launched games
+* Use root directory instead of App directory for launched games.
+ - To use root directory launchers, save Dist\GeneralSetting.json as <APM directory>\Apmv3System_Data\GeneralSetting.json, and change imageRootPath to the same as set in segatools.ini.
+ - Place a game.bat file in the game's root directory to use for a specific game. 
+ - This allows the directory with app.json, icon.png, etc. to be the "root" directory, if you need access to these files.
+
+--- APMHeadbanana ---
+
+Replacement DLL to make APM headphone controls customizable.
+
+By default, replacing apmHeadphoneVolume.dll with no further configuration will make the headphone volume slider in Apmv3System and emoneyUI adjust the main left/right speaker volume.
 
 --- APMHeadbananaLink ---
 
-Allows setting of the audio channels that APMHeadbanana changes.
-
-APMHeadbanana (Audio control replacement dll - control arbitary audio channels with the headphone slider in APM): https://github.com/akechi-haruka/apmHeadbanana
+Allows setting the audio channels that APMHeadbanana changes.
 
 --- emoneyUIFixes ---
 
 Adds some QoL features to eMoneyUI:
 
-* Shrinks the hitbox for the buttons (useful in touch games)
-* SegAPI integration
-    - Add an "exit game" button
+* Shrinks the hitbox for the buttons
+* Add primary speaker controls
+* Allow exiting non-APM games
+* Add in-game guides and menus
+ - See Dist/appex.json for an example. To use, create a directory called "AppEx" in the game's root directory (where game.bat is) and place appex.json in there. Guide files have to be placed in AppEx\guide.
     
 --- EXMoney ---
 

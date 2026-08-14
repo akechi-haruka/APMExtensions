@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Apm.System.Daemon;
 using Apm.System.Util.Image;
 using HarmonyLib;
 
 namespace APMCoreFixes {
-    internal class APMDebugPatches {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    class APMDebugPatches {
         // WTF SEGA
         [HarmonyPrefix, HarmonyPatch(typeof(Analyzer), "ValidCombination")]
         public static bool ValidCombination(ref string[] __result, string[] names) {
@@ -70,6 +72,7 @@ namespace APMCoreFixes {
             __result = null;
         }
 
+        // log SetError calls
         [HarmonyPostfix, HarmonyPatch(typeof(Core), "SetError")]
         static void SetError(int number) {
             ApmCoreFixes.Log.LogError("SetError: " + number + ": " + new StackTrace());

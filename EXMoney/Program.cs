@@ -17,14 +17,14 @@ namespace Haruka.Arcade.EXMoney;
 class Program {
     public static readonly string NAME;
 
-    public static VFD_GP1232A02A Vfd;
+    public static VfdGp1232A02A Vfd;
     public static SegApi SegApi;
     public static ConfigParser AppConfig;
     public static ShareMemoryAccessor Memory;
     public static IConfigurationRoot Config;
     public static MoneyBrand[] Brands;
 
-    private static bool IsTerminating;
+    private static bool isTerminating;
 
     static Program() {
         string gitHash = Assembly.Load(typeof(Program).Assembly.FullName)
@@ -55,6 +55,9 @@ class Program {
     private static int Run(Options options) {
         Config = Configuration.Initialize();
         Logging.Initialize(Config, options.Silent, true);
+        LogManager.Initialize(Logging.Factory);
+
+        Logging.Main.LogInformation(NAME);
         Logging.Main.LogDebug("Command line: {c}", String.Join(' ', Environment.GetCommandLineArgs()));
 
         string keychip = options.KeychipId;
@@ -109,12 +112,11 @@ class Program {
             return 1;
         }
 
-        Log.LogMessageWritten += LogOnLogMessageWritten;
         if (options.VfdPort > 0) {
             Logging.Main.LogInformation("Connecting VFD...");
-            Vfd = new VFD_GP1232A02A(options.VfdPort);
+            Vfd = new VfdGp1232A02A(options.VfdPort);
             DeviceStatus ret = Vfd.Connect();
-            if (ret != DeviceStatus.OK) {
+            if (ret != DeviceStatus.Ok) {
                 Logging.Main.LogError("Error connecting to VFD: {s}", ret);
                 return 1;
             }
@@ -124,15 +126,15 @@ class Program {
             string version = "<unknown>";
             if (!options.SkipVfdVersionRead) {
                 ret = Vfd.GetVersion(out version);
-                if (ret != DeviceStatus.OK) {
+                if (ret != DeviceStatus.Ok) {
                     Logging.Main.LogError("Error communicating with VFD: {s}", ret);
                     return 1;
                 }
             }
 
-            Vfd.SetEncoding(VFDEncoding.SHIFT_JIS);
+            Vfd.SetEncoding(VfdEncoding.ShiftJis);
             Vfd.SetOn(true);
-            Vfd.SetBrightness(VFDBrightnessLevel.LEVEL2);
+            Vfd.SetBrightness(VfdBrightnessLevel.Level2);
             Vfd.SetText("Please wait...", "");
 
             Logging.Main.LogInformation("VFD connected: {v}", version);
@@ -145,6 +147,8 @@ class Program {
 
         if (keychip != null && options.Server != null) {
             OpenMoney.Configure(options.Server, options.KeychipId);
+        } else {
+            Logging.Main.LogWarning("No server set! Payment is simulated!");
         }
 
         Logging.Main.LogInformation("Initialized successfully");
@@ -170,10 +174,14 @@ class Program {
 
     private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs e) {
         Logging.Main.LogInformation("Cancel key pressed!");
-        if (!IsTerminating) {
+        if (!isTerminating) {
             Memory.RequestExit = true;
             e.Cancel = true;
-            IsTerminating = true;
+            isTerminating = true;
+            new Thread(() => {
+                Thread.Sleep(250);
+                Environment.Exit(0);
+            }).Start();
         } else {
             Logging.Main.LogWarning("Force terminating!");
         }
@@ -234,14 +242,6 @@ class Program {
 
         mem.Data = data;
         mem.Update();
-    }
-
-    private static void LogOnLogMessageWritten(LogEntry obj) {
-        switch (obj.Color) {
-            case ConsoleColor.Red: Logging.SegaLib.LogError(obj.Message); break;
-            case ConsoleColor.Yellow: Logging.SegaLib.LogWarning(obj.Message); break;
-            default: Logging.SegaLib.LogInformation(obj.Message); break;
-        }
     }
 
     private static void SegApiOnOnLogMessage(string obj) {

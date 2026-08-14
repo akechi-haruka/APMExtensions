@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using AMDaemon;
@@ -14,7 +15,8 @@ using static Apm.System.Error.ErrorResource;
 using SceneManager = Apm.System.GameIconList.SceneManager;
 
 namespace APMCoreFixes {
-    internal class MiscPatches {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    class MiscPatches {
         // Skip warning screen
         [HarmonyPrefix, HarmonyPatch(typeof(Warning), "StartAnimation")]
         static bool StartAnimation(AnimationController.AnimationEnd onEnd) {
@@ -26,25 +28,7 @@ namespace APMCoreFixes {
             return true;
         }
 
-        private static String UpdateOptionPath(string original_path) {
-            string game_path = Path.GetDirectoryName(original_path);
-            ApmCoreFixes.Log.LogInfo("Directory is: " + game_path);
-
-            if (game_path.StartsWith(@"C:\Mount\Option")) {
-                ApmCoreFixes.Log.LogDebug("Default option path detected: " + game_path);
-                IniFile segatools = new IniFile("segatools.ini");
-                bool vfs_disabled = "0".Equals(segatools.Read("enabled", "vfs"));
-                string vfs_option = segatools.Read("option", "vfs");
-                if (!vfs_disabled && !String.IsNullOrWhiteSpace(vfs_option)) {
-                    game_path = game_path.Replace(@"C:\Mount\Option", vfs_option);
-                    ApmCoreFixes.Log.LogInfo("Path adjusted to " + game_path);
-                }
-            }
-
-            return game_path;
-        }
-
-        private static bool DeleteVirtualDrive(string letter) {
+        private static void DeleteVirtualDrive(string letter) {
             ApmCoreFixes.Log.LogDebug("Deleting virtual drive (if any)");
             try {
                 Process p = Process.Start(new ProcessStartInfo("subst.exe", letter + ": /D") {
@@ -58,18 +42,16 @@ namespace APMCoreFixes {
                 p.BeginOutputReadLine();
                 p.BeginErrorReadLine();
                 p.WaitForExit();
-                return true;
             } catch (Exception ex) {
                 ApmCoreFixes.Log.LogError("Failed to set virtual drive: " + ex);
                 Error.Set((int)ErrorNumber.CommonUnexpectedGameProgramFailure);
-                return false;
             }
         }
 
-        private static bool SetVirtualDrive(string letter, string game_path) {
+        private static bool SetVirtualDrive(string letter, string gamePath) {
             ApmCoreFixes.Log.LogDebug("Setting virtual drive");
             try {
-                Process p = Process.Start(new ProcessStartInfo("subst.exe", letter + ": " + game_path) {
+                Process p = Process.Start(new ProcessStartInfo("subst.exe", letter + ": " + gamePath) {
                     CreateNoWindow = true,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -110,15 +92,15 @@ namespace APMCoreFixes {
                 return false;
             }
 
-            string game_path = UpdateOptionPath(game.paths.images.Original);
+            string gamePath = game.paths.images.Original;
 
-            if (!File.Exists(Path.Combine(game_path, "game.bat"))) {
+            if (!File.Exists(Path.Combine(gamePath, "game.bat"))) {
                 ApmCoreFixes.Log.LogWarning("No game.bat in root directory found, falling back to actual start routine!");
                 return true;
             }
 
             DeleteVirtualDrive("W");
-            if (!SetVirtualDrive("W", game_path)) {
+            if (!SetVirtualDrive("W", gamePath)) {
                 return false;
             }
 
@@ -147,9 +129,9 @@ namespace APMCoreFixes {
                 return false;
             }
 
-            string game_path = UpdateOptionPath(game.paths.images.Original);
+            string gamePath = game.paths.images.Original;
 
-            if (!File.Exists(Path.Combine(game_path, "game.bat"))) {
+            if (!File.Exists(Path.Combine(gamePath, "game.bat"))) {
                 ApmCoreFixes.Log.LogWarning("No game.bat in root directory found, falling back to actual start routine!");
                 return true;
             }
@@ -157,7 +139,7 @@ namespace APMCoreFixes {
             Thread.Sleep(1000); // let sound effect finish
 
             DeleteVirtualDrive("W");
-            if (!SetVirtualDrive("W", game_path)) {
+            if (!SetVirtualDrive("W", gamePath)) {
                 return false;
             }
 
@@ -252,22 +234,19 @@ namespace APMCoreFixes {
         private static void UpdateAnalog(InputSystem input) {
             InputUnit unit = Input.Players[0];
 
-            double deadzone = ApmCoreFixes.ConfigIO4StickDeadzone.Value / 100F;
+            double deadzone = ApmCoreFixes.ConfigIo4StickDeadzone.Value / 100F;
             var ax = unit.GetAnalog(ApmCoreFixes.AnalogX).Value;
             var ay = unit.GetAnalog(ApmCoreFixes.AnalogY).Value;
             double x = Map(ax, 0, 1, -1, 1);
             double y = Map(ay, 0, 1, -1, 1);
-            //APMCF.Log.LogDebug(ax + "/" + ay);
 
-            if (ApmCoreFixes.ConfigIO4AxisXInvert.Value) {
+            if (ApmCoreFixes.ConfigIo4AxisXInvert.Value) {
                 x = -x;
             }
 
-            if (ApmCoreFixes.ConfigIO4AxisYInvert.Value) {
+            if (ApmCoreFixes.ConfigIo4AxisYInvert.Value) {
                 y = -y;
             }
-
-            //APMCF.Log.LogDebug(x + "/" + y);
 
             bool on = (
                 (input.sw == InputSwitch.up && y > deadzone) ||
