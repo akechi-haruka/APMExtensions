@@ -1,0 +1,9 @@
+﻿<Project Sdk="">
+    <ItemGroup>
+        <Content Include="Text\Boot.txt"/>
+        <Content Include="Text\EMoneyUI.txt"/>
+        <Content Include="Text\GameSelect.txt"/>
+        <Content Include="Text\TestMenu.txt"/>
+        <Content Include="Text\TestMenu_resizer.txt"/>
+    </ItemGroup>
+</Project>

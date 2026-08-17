@@ -1,0 +1,3 @@
+MainCanvas/ControlCanvas/MainMenu/IsonList/ClosingSetting/Text=ChangeFontSizeByPercentage(1.05)
+MainCanvas/ControlCanvas/MainMenu/IsonList/TouchPanel/Text=ChangeFontSizeByPercentage(1.01)
+MainCanvas/ControlCanvas/MainMenu/IsonList/FirmInfo/Text=ChangeFontSizeByPercentage(1.05)

@@ -1,0 +1,15 @@
+残高照会=Check Balance
+r:"^(\d+)円$"=$1 Yen
+購入する金額をタッチして下さい=Please select the amount that you want to buy
+r:"^使用する電子マネーをタッチして下さい \(決済金額 : (\d+)円\)$"=Select the electronic money to use (Payment: $1 Yen)
+残高を確認する電子マネーをタッチして下さい=Select the electronic money to check balance for
+r:"^決済金額 : (\d+)円$"=Payment: $1 Yen
+受付中=Now accepting payment...
+キャンセル中=Cancelling...
+
+ゲームパッド入力プレビュー=Gamepad Input Preview
+左スティック=Left Stick
+方向キー=D-Pad
+右スティック=Right Stick
+トリガー1=Trigger 1
+トリガー2=Trigger 2

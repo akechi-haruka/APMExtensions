@@ -1,0 +1,6 @@
+ヘッドホンボリューム=Headphone Volume
+ムービー=Play Movie
+プレイ=Play Game
+r:"^対戦グループ (.*?)$"=Matching Group $1
+r:"^協力グループ ([0-9])+$"=Co-op Group $1
+CREDIT(S) COIN=FREE PLAY

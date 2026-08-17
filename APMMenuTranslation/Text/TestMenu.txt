@@ -1,0 +1,177 @@
+サブシステムテストモード=Sub-System Test Mode
+
+サービスボタン または レバーで確認したい項目を選択します\nタッチパネルでも操作できます=Select with the service button or lever.\nYou can also use the touch panel.
+サービスボタン または レバーで項目を選択します\nテストボタン または ボタン1 で項目を決定します\nタッチパネルでも操作できます=Select with the service button or lever.\nConfirm the item with the test button or button 1.\nYou can also use the touch panel.
+テストボタン または ボタン1 を押すと終了します=Press the test button or button 1 to exit.
+テストボタン＋サービスボタンで終了します\r\nタッチパネルでも操作できます=Exit with the test button + service button.\nYou can also use the touch panel.
+テストボタン または ボタン1 を押すと終了します\nタッチパネルでも操作できます=Press the test button or button 1 to exit.\nYou can also use the touch panel.
+テストボタン または ボタン1 を押すと端末認証をキャンセルします\nタッチパネルでも操作できます=Press the test button or button 1 to cancel the terminal authentication.\nYou can also use the touch panel.
+指を使ってマルチタッチが反応しているか確認してください\n指を使ってラインを描くことができるか確認してください\nタッチパネルの調整はシステムテストモードで実施できます\nテストボタン または ボタン1 で終了します\r=Check if the multi-touch panel is responding using your fingers.\nMake sure you can draw a line using your finger.\nTouch panel sensitivity can be adjusted in System Test Mode.\nPress the test button or button 1 to exit.\r
+\nタッチパネルを認識していません\n\nテストボタン または ボタン1 で終了します=\nThe touch panel is not recognized.\nPress the test button or button 1 to exit.
+
+稼働状況(ブックキーピング)=Bookkeeping
+稼働開始情報=Operation Start Information
+稼働タイトル設定=Enabled Title Settings
+筐体マッチング設定=Matching Settings
+閉店設定=Store Close Settings
+アドバタイズ設定=Advertisement Settings
+ALL.Net 課金ステータス=All.Net Billing Status
+ALL.Net\n課金ステータス=All.net\nBilling Status
+ALL.Net 配信ステータス=All.Net Download Status
+電子マネー情報=E-Money Settings
+コントロールパネル\n入力テスト=Control Panel\nInput Test
+タッチパネル入力テスト=Touch Panel Input Test
+出力テスト=Output Test
+VFD表示テスト=VFD Display Test
+ネットワークテスト=Network Test
+Aime カードリーダーテスト=AIME Card Reader Test
+Aimeカードリーダー\nテスト = AIME Card Reader Test
+ファームウェアバージョン=Firmware Version
+ファームウェア情報=Firmware Information
+バックアップデータ消去(サブシステム)=Delete Backup Data (Sub-System)
+システムテストモード=System Test Mode
+
+コイン1=Coin 1
+コイン2=Coin 2
+トータルコイン=Total Coins
+電子マネー購入クレジット=Credits purchased with E-Money
+電子マネー購入コイン=Coins purchased with E-Money
+コインクレジット=Credits from coins
+サービスクレジット=Credits from services
+トータルクレジット=Total credits
+
+r:"^最新情報取得時刻：(.*?)$"=Time of last information acquisition: $1
+ゲームID   : =Game ID    :
+タイトル名 : =Title Name :
+アプリケーションデータ=Application Data
+バージョン=Version
+稼働開始日=Start Date
+稼働終了日=End Date
+開始日=Start Date
+終了日=End Date
+DL完了=DL OK?
+オプションデータ=Option Data
+
+全解除=Select None
+全選択=Select All
+r:"^選択した ([0-9]+) タイトルの選択台となります。$"=This will be a $1-title selection unit.
+r:"^(.*?) 専用台となります。$"=This is a dedicated unit for $1.
+稼働タイトルを選択してください。=Please select the title(s) to operate on this unit.
+システムの初期化が完了するまで表示できません。=Titles cannot be displayed until the system is initialized.
+
+店内対戦グループ=Store Versus Group
+店内協力グループ=Store Co-op Group
+同じ値のキャビネットと対戦プレイします=Players will play against units with the same setting.
+同じ値のキャビネットと協力プレイします=Players will cooperate with units with the same setting.
+
+種別=Type
+毎日=Day
+曜日=Week
+設定=Setting
+オフ=OFF
+オン=ON
+土曜=Saturday
+月曜=Monday
+日曜=Sunday
+金曜=Friday
+木曜=Thursday
+火曜=Tuesday
+水曜=Wednesday
+設定値=Set Value
+
+アドバタイズ音=Auto-Play Sound
+
+ALL.Net 警告表示=All.Net Caution
+課金モード=Billing Mode
+課金ステータス=Billing Status
+課金カウント=Billing Counter
+レポート状況=Report Status
+レポート1 : =Report 1: 
+レポート2 : =Report 2: 
+
+システムダウンロード情報=System Download Information
+稼働中バージョン=Current Version
+配信中バージョン=Download Version
+ダウンロード進捗=Download Progress
+ダウンロード開始日=Download Date
+ソフトウェア解禁日=Installation Date
+ダウンロード状況=Download Status
+不明=Unknown
+ゲームダウンロード情報=Game Download Information
+
+端末認証=Terminal Authentication
+端末撤去=Terminal Removal
+実行=Execute
+端末認証中です=Terminal authentication is underway...\nPlease check the VFD.
+端末撤去を行いますか？=Do you want to remove the terminal?
+はい\n(撤去)=Yes\n(Remove)
+いいえ\n(キャンセル)=No\n(Cancel)
+端末撤去処理が完了しました=The terminal removal has been completed.
+端末 ID=Terminal ID
+ブランド=Brand
+      取引履歴=      Transaction History
+取引日時=Transaction Date
+結果=Result
+取引通番=Serial
+カード番号=Card Number
+取引金額=Transaction Amount
+取引前残高=Balance Before
+取引後残高=Balance After
+成功=Success
+
+入力テスト=Input Test
+レバー上=Lever Up
+レバー左=Lever Left
+レバー下=Lever Down
+レバー右=Lever Right
+r:"^ボタン([0-9])$"=Button $1
+サービスボタン=Service Button
+テストボタン=Test Button
+スタートボタン=Start Button
+ホームボタン=Home Button
+USBゲームパッド=USB Gamepad
+未接続=Not conn.
+接続=Connected
+
+コインブロッカー=Coin Blocker
+コイン投入不可=Coins blocked
+コイン投入可=Coins unblocked
+LED(上部)=LED (Top)
+LED(コンパネ)=LED (Control Panel)
+LED(足元)=LED (Bottom)
+USBチャージングポート=USB Charge Port
+スピーカー左=Speaker Left
+スピーカー右=Speaker Right
+ヘッドホン左=Headphone Left
+ヘッドホン右=Headphone Right
+
+VFD 表示テスト中\n\n上段、下段の順で「｜」が右から左に流れて表示されます\nVFD の表示に欠けなどがないか確認してください\n=VFD Display Test\nIn the top and bottom row, "|" will be displayed from right to left. Please check if there are no defects on the VFD display.\n
+VFD 表示テスト終了=VFD display test finished.
+
+ハードウェアバージョン=Hardware Version
+読み込みチェック=Card Reading Check
+LED チェック=LED Check
+Aime カードリーダー 読み込みチェック=Aime Card Reader Reading Check
+Aime対応カードもしくは対応する携帯電話をかざしてください\r=Hold an Aime-enabled card or compatible mobile phone to the reader.\r
+カード読み込み ：=Card Reader:
+Aime カードリーダー LED チェック=AIME Card Reader LED Check
+LED 赤=LED Red
+LED 緑=LED Green
+LED 青=LED Blue
+LED 制御ボード=LED Control Board
+
+バックアップデータ=Backup Data
+消去=Erase
+バックアップデータを消去しますか?=Do you want to erase the backup data?
+バックアップデータを消去すると、\n稼働状況(ブックキーピング)、\n未使用分のクレジットが消えます=When the backup data is deleted, bookkeeping and unused credits will be deleted.
+サブシステムテストモードで稼働タイトルを設定してください=Set the operation title in the sub -system test mode
+はい\n(消去)=Yes\n(Erase)
+バックアップデータの消去が完了しました=Backup data was erased.
+
+起動=Boot
+はい\n(起動)=Yes\n(Boot)
+システムテストモードを起動しますか?=Do you want to switch to System Test Mode?
+
+ALL.Netの接続状態をサブシステムテストモードで確認し、問題を解決してください=Check the connection status to All.Net in the sub-system test mode and resolve any problems.
+タッチパネルの接続を確認してください=Check the connection of the touch panel.
+筐体の電源を入れなおしてください。電源OFF/ONで復旧しない場合は、カスタマサポートへ連絡してください=Please turn off the power.\nIf the error is not recovered after power OFF/ON, please contact customer support.
