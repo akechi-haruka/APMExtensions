@@ -5,8 +5,8 @@ param(
     [string]
     $OutputFile = "Release.zip",
 
-    [Boolean]
-    $Build = 0
+    [switch]
+    $Build
 )
 
 Write-Output Cleaning...
@@ -16,11 +16,12 @@ If (Test-Path $ReleasePath)
 }
 New-Item -Path $ReleasePath -ItemType Directory
 
-if ($Build -ne 0)
+if ($Build.IsPresent)
 {
     Write-Output Building...
 
-    dotnet build
+    msbuild /p:Configuration=Release
+    msbuild /p:RuntimeIdentifier=win-x64 /p:SelfContained=false /p:PublishSingleFile=true /p:PublishReadyToRun=false /p:PublishTrimmed=false /p:IncludeNativeLibrariesForSelfExtract=false /p:IncludeAllContentForSelfExtract=false /p:Configuration=Release APMExtensions.sln
 }
 
 $LauncherRoot = "$ReleasePath\LauncherDirectory"

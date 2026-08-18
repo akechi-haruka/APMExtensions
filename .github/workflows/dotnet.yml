@@ -1,0 +1,44 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  release:
+    types:
+      - published
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  NuGetDirectory: ${{github.workspace}}/nuget
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: BuildPackage.ps1 -Build
+    - name: Upload
+      uses: actions/upload-artifact@v4.3.3
+      with:
+        name: APMExtensions.zip
+        path: Release.zip
+        if-no-files-found: error
+        overwrite: true
+  deploy:
+    permissions:
+        contents: write
+    if: github.event_name == 'release'
+    runs-on: windows-latest
+    needs: [ build ]
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: download
+          merge-multiple: true
+          skip-decompress: true
+      - name: Add binaries to release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            download/*
