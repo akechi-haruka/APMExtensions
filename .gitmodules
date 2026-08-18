@@ -1,0 +1,4 @@
+[submodule "Wiki"]
+	path = Wiki
+	url = https://github.com/akechi-haruka/APMExtensions.wiki.git
+	branch = master

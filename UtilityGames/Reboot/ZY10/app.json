@@ -1,0 +1,19 @@
+{
+	"aime" : false,
+	"titleName" : "Reboot",
+	"subGameId" : "ZZZY",
+	"emoney" : {
+		"enable":false,
+		"paseli":false,
+		"sound":false,
+		"credits":[]
+	},
+	"ui" : {
+		"entry_icons":{"direction":0,"position":{"position":0,"margin":{"x":0,"y":0}}},
+		"main_window":{"position":{"position":0,"margin":{"x":0,"y":0}}}
+	},
+	"gamepad" : {
+		"enable":false,
+		"merge":false
+	}
+}

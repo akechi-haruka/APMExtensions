@@ -13,7 +13,7 @@ International.
 
 ## Setup
 
-Head to the [Wiki]().
+Head to the [Wiki](https://github.com/akechi-haruka/APMExtensions/wiki).
 
 ## Features
 
@@ -60,7 +60,7 @@ The project can be built using `dotnet build` or any IDE that has C# integration
 ### Requirements
 
 * .NET Framework 4.8.1 SDK, .NET 10 SDK, MSVC v145 or higher, Windows 10 SDK 10.0.26100.0 or higher.
-* The latest version of BepInEx 5 placed in `Libs\bepinex`.
+* The latest version of [BepInEx 5](https://github.com/BepInEx/BepInEx/releases) placed in `Libs\bepinex`.
 * All .dll files from APMv3System's `APMv3System_Data\Managed` folder (SDED 1.05.90) placed in `Libs\apm`
     * A "publicized" version of `Assembly-CSharp.dll` is required, which can be obtained by
       running [NStrip](https://github.com/bbepis/NStrip) with `nstrip.exe -p -cg Assembly-CSharp.dll`
