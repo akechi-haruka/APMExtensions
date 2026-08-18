@@ -16,6 +16,8 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v7
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v3
     - name: Build
       run: powershell .\BuildPackage.ps1 -Build
     - name: Upload
