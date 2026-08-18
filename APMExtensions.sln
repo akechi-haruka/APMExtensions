@@ -17,10 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegApiCS", "..\SegApiCS\Seg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{775A1E3F-C32B-4C6F-B092-B57B0B95AC82}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dist", "Dist", "{37F069C8-D2A2-42B1-9DEF-1D3B90B6D8C2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{37F069C8-D2A2-42B1-9DEF-1D3B90B6D8C2}"
 	ProjectSection(SolutionItems) = preProject
-		Dist\appex.json = Dist\appex.json
-		Dist\GeneralSetting.json = Dist\GeneralSetting.json
+		Resources\appex.json = Resources\appex.json
+		Resources\GeneralSetting.json = Resources\GeneralSetting.json
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "APMHeadbanana", "APMHeadbanana\APMHeadbanana.vcxproj", "{5B6523C2-6078-4A7E-A69F-816144D1E14F}"
@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		README.md = README.md
+		BuildPackage.ps1 = BuildPackage.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{05B490E7-32A7-4426-A113-2F1A50971F11}"
@@ -70,6 +71,8 @@ Global
 		{093885E5-3C56-41E3-9065-FD340BCED55B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B6523C2-6078-4A7E-A69F-816144D1E14F}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{5B6523C2-6078-4A7E-A69F-816144D1E14F}.Debug|Any CPU.Build.0 = Debug|x64
+		{5B6523C2-6078-4A7E-A69F-816144D1E14F}.Release|Any CPU.ActiveCfg = Release|x64
+		{5B6523C2-6078-4A7E-A69F-816144D1E14F}.Release|Any CPU.Build.0 = Release|x64
 		{7121641F-8085-456F-A5A9-1F98DD495CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7121641F-8085-456F-A5A9-1F98DD495CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7121641F-8085-456F-A5A9-1F98DD495CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU

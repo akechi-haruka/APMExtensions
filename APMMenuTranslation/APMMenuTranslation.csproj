@@ -1,4 +1,10 @@
 ﻿<Project Sdk="">
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <OutputPath>bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <OutputPath>bin\Release\</OutputPath>
+    </PropertyGroup>
     <ItemGroup>
         <Content Include="Text\Boot.txt"/>
         <Content Include="Text\EMoneyUI.txt"/>
@@ -6,4 +12,8 @@
         <Content Include="Text\TestMenu.txt"/>
         <Content Include="Text\TestMenu_resizer.txt"/>
     </ItemGroup>
+    <Target Name="Debug">
+    </Target>
+    <Target Name="Release">
+    </Target>
 </Project>
