@@ -45,6 +45,9 @@ Copy-Item -Recurse EXMoney\bin\Release\net10.0-windows\win-x64 $LauncherRoot\EXM
 
 Copy-Item -Recurse APMMenuTranslation\Text $LauncherRoot\BepInEx\Translation\en\Text
 
+New-Item -Path $LauncherRoot\amfs -ItemType Directory
+Copy-Item Resources\ICF1 $LauncherRoot\amfs
+
 Copy-Item -Recurse UtilityGames $ReleasePath
 
 Write-Output Packaging...
