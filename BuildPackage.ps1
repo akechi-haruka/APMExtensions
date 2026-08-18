@@ -9,6 +9,8 @@ param(
     $Build
 )
 
+$ErrorActionPreference = "Stop"
+
 Write-Output Cleaning...
 If (Test-Path $ReleasePath)
 {
