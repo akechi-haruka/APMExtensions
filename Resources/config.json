@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "exit": {
+    "kill": false,
+    "kill_process_name_list": [
+      "dummy.exe"
+    ]
+  }
+}
