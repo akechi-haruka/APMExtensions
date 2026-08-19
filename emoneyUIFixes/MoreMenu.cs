@@ -384,7 +384,7 @@ namespace Haruka.Arcade.EMUICF {
 
                 foreach (AppExConfig.GuideButton def in page.content.buttons) {
                     bool centerButton = def.center;
-                    GameObject button = CloneAndRewireButton(guide.transform, "GuidePageButton", def.text, new Vector2(def.width, def.height), Images.BLUE_BUTTON_TEXTURE, () => ChangeGuidePage(def.target));
+                    GameObject button = CloneAndRewireButton(guide.transform, "GuidePageButton", def.text, new Vector2(def.width, def.height), Images.BLUE_BUTTON_TEXTURE, () => ChangeGuidePage(def.target - 1));
 
                     if (centerContent) {
                         if (centerButton) {
