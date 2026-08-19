@@ -211,8 +211,12 @@ namespace APMCoreFixes {
 
         [HarmonyPrefix, HarmonyPatch(typeof(Apm.System.Daemon.Main), "IsRebootNeeded", MethodType.Getter)]
         static bool IsRebootNeeded(ref bool __result) {
-            __result = false;
-            return false;
+            if (ApmCoreFixes.ConfigIgnoreReboots.Value) {
+                __result = false;
+                return false;
+            }
+
+            return true;
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(InputSystem), "Update")]

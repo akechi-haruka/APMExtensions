@@ -28,6 +28,7 @@ namespace APMCoreFixes {
         public static ConfigEntry<bool> ConfigShowMouse;
         public static ConfigEntry<bool> ConfigShowClock;
         public static ConfigEntry<bool> ConfigAddXFolders;
+        public static ConfigEntry<bool> ConfigIgnoreReboots;
 
         public static ConfigEntry<bool> ConfigAmdAnalogInsteadOfButtons;
         public static ConfigEntry<int> ConfigIo4StickDeadzone;
@@ -47,6 +48,8 @@ namespace APMCoreFixes {
             ConfigUseBatchLaunchSystem = Config.Bind(CAT_HOME_USE, "Use root .bat launchers", true, new ConfigDescription("If a game.bat is placed outside the App directory, launch that directly instead of via amdaemon / mount routines. See readme for more information."));
             ConfigShowMouse = Config.Bind(CAT_HOME_USE, "Show Mouse", false, "Shows the mouse cursor.");
             ConfigShowClock = Config.Bind(CAT_HOME_USE, "Show Clock", true, "Shows a clock on the game selection screen.");
+            ConfigIgnoreReboots = Config.Bind(CAT_HOME_USE, "Ignore Reboots", true, "Ignore if amdaemon requests a reboot of the PC");
+
             ConfigAddXFolders = Config.Bind(CAT_NETWORK, "Add X-APMCF-Folders Field", true, new ConfigDescription("Adds all existing folders to an extra field in network communication when fetching game list.", null, new ConfigurationManagerAttributes() { IsAdvanced = true }));
 
             ConfigAmdAnalogInsteadOfButtons = Config.Bind(CAT_INPUT, "Use Analog instead of buttons", false, "Use analog for navigation instead of 4 buttons (Requires config_hook.json, see readme)");
