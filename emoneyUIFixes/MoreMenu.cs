@@ -104,7 +104,7 @@ namespace Haruka.Arcade.EMUICF {
 
                     bool atLeastOneAppExEnabled = Plugin.AppExConfig.exit.kill && Plugin.AppExConfig.exit.kill_process_name_list?.Length > 0;
 
-                    SpawnButton(itemButtons, "Game Guide", Plugin.AppExConfig.guide.pages?.Length > 0, ActionGameGuide);
+                    SpawnButton(itemButtons, "Game Guide", Plugin.GuideData.pages?.Length > 0, ActionGameGuide);
                     SpawnButton(itemButtons, "Cabinet\nSpeakers", Plugin.ConfigSpeakerAdjustmentEnabled.Value && BananaBridge.IsWorking, ActionSpeakerVolume);
                     SpawnButton(itemButtons, "Audio Mode", Plugin.ConfigSpeakerAdjustmentEnabled.Value && BananaBridge.IsWorking, ActionAudioMode);
                     SpawnButton(itemButtons, "Exit Game", Plugin.ConfigAllowExit.Value && atLeastOneAppExEnabled, ActionKillGame);
@@ -148,7 +148,7 @@ namespace Haruka.Arcade.EMUICF {
                     prevGuidePageButton.SetActive(true);
                     nextGuidePageButton.SetActive(true);
 
-                    ResizeMenu(Plugin.AppExConfig.guide.width, Plugin.AppExConfig.guide.height);
+                    ResizeMenu(Plugin.GuideData.width, Plugin.GuideData.height);
 
                     ChangeGuidePage(0);
 
@@ -324,7 +324,7 @@ namespace Haruka.Arcade.EMUICF {
         #region Game Guide
 
         private void ChangeGuidePage(int pageNumber) {
-            AppExConfig.GuidePage[] pages = Plugin.AppExConfig.guide.pages;
+            AppExConfig.GuidePage[] pages = Plugin.GuideData.pages;
 
             if (pageNumber < 0 || pageNumber >= pages.Length) {
                 Plugin.Log.LogWarning("Guide page out of range: " + pageNumber + "/" + pages.Length);
@@ -506,7 +506,7 @@ namespace Haruka.Arcade.EMUICF {
                 }
             };
             RectTransform rt = guideImage.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(Plugin.AppExConfig.guide.width, Plugin.AppExConfig.guide.height);
+            rt.sizeDelta = new Vector2(Plugin.GuideData.width, Plugin.GuideData.height);
 
             prevGuidePageButton = CloneAndRewireButton(cancelButton.transform.parent, "PrevPageButton", "<<", new Vector2(50, 40), Images.BLUE_BUTTON_TEXTURE, PrevGuidePage);
             pinButton = CloneAndRewireButton(cancelButton.transform.parent, "PinButton", "Pin", new Vector2(75, 40), Images.GREEN_BUTTON_TEXTURE, PinMenu);

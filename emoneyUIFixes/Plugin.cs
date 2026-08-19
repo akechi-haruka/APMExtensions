@@ -39,6 +39,7 @@ namespace Haruka.Arcade.EMUICF {
         public static ManualLogSource Log;
 
         internal static AppExConfig AppExConfig;
+        internal static AppExConfig.GuideInfo GuideData;
         internal static SceneManager SceneManager;
         internal static Plugin Self;
 
@@ -75,7 +76,7 @@ namespace Haruka.Arcade.EMUICF {
         }
 
         private void ReloadAppEx() {
-            string path = Path.Combine(ConfigExDataPath.Value, "appex.json");
+            string path = Path.Combine(ConfigExDataPath.Value, "config.json");
             Log.LogInfo("Checking AppEx at " + path + "...");
             if (File.Exists(path)) {
                 try {
@@ -87,6 +88,18 @@ namespace Haruka.Arcade.EMUICF {
             }
 
             Log.LogInfo("..." + (AppExConfig.version > 0 ? "success" : "failed"));
+
+            path = Path.Combine(ConfigExDataPath.Value, "guide.json");
+            Log.LogInfo("Checking Guide Data at " + path + "...");
+            if (File.Exists(path)) {
+                try {
+                    GuideData = JsonConvert.DeserializeObject<AppExConfig.GuideInfo>(File.ReadAllText(path));
+                } catch (Exception ex) {
+                    Log.LogError("Failed to read Guide Data: " + ex);
+                }
+            }
+
+            Log.LogInfo("..." + (GuideData.width > 0 ? "success" : "failed"));
         }
 
         [UsedImplicitly]

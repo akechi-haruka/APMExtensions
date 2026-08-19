@@ -12,7 +12,6 @@ namespace Haruka.Arcade.EMUICF {
     public struct AppExConfig {
         public int version;
         public Exit exit;
-        public GuideInfo guide;
 
         [Serializable]
         public struct Exit {
