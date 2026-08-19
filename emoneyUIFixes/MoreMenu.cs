@@ -348,7 +348,7 @@ namespace Haruka.Arcade.EMUICF {
             }
 
             if (!String.IsNullOrWhiteSpace(page.file)) {
-                string path = Path.Combine(Plugin.ConfigExDataPath.Value, "Guide/" + page.file);
+                string path = Path.Combine(Plugin.ConfigExDataPath.Value, page.file);
                 if (path.EndsWith(".txt")) {
                     try {
                         GuideText = File.ReadAllText(path);
