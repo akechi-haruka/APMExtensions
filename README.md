@@ -38,7 +38,7 @@ Apmv3System and emoneyUI adjust the main left/right speaker volume.
 
 Allows setting the audio channels that APMHeadbanana changes.
 
-### emouneyUIFixes
+### emoneyUIFixes
 
 * Shrinks the hitbox for the buttons
 * Add primary speaker controls
