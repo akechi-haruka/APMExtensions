@@ -8,8 +8,8 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace APMCoreFixes {
-    [BepInPlugin("eu.haruka.gmg.apm.fixes", "APMCoreFixes", "1.1")]
+namespace Haruka.Arcade.Apm.CoreFixes {
+    [BepInPlugin("eu.haruka.gmg.apm.fixes", "APMCoreFixes", "1.2")]
     [BepInProcess("Apmv3System")]
     [UsedImplicitly]
     public class ApmCoreFixes : BaseUnityPlugin {

@@ -20,7 +20,7 @@ using static Apm.System.Error.ErrorResource;
 using Object = UnityEngine.Object;
 using SceneManager = Apm.System.GameIconList.SceneManager;
 
-namespace APMCoreFixes {
+namespace Haruka.Arcade.Apm.CoreFixes {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     class MiscPatches {
         // Skip warning screen
@@ -80,13 +80,13 @@ namespace APMCoreFixes {
             }
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(Apm.System.Setup.SceneManager), "Update")]
-        public static bool Update(Apm.System.Setup.SceneManager __instance) {
+        [HarmonyPrefix, HarmonyPatch(typeof(global::Apm.System.Setup.SceneManager), "Update")]
+        public static bool Update(global::Apm.System.Setup.SceneManager __instance) {
             if (!ApmCoreFixes.ConfigUseBatchLaunchSystem.Value) {
                 return true;
             }
 
-            if (__instance.state != Apm.System.Setup.SceneManager.State.StartGame) {
+            if (__instance.state != global::Apm.System.Setup.SceneManager.State.StartGame) {
                 return true;
             }
 
@@ -114,7 +114,7 @@ namespace APMCoreFixes {
 
             ApmCoreFixes.Log.LogDebug("Virtual drive set");
 
-            __instance.state = Apm.System.Setup.SceneManager.State.WaitStartGame;
+            __instance.state = global::Apm.System.Setup.SceneManager.State.WaitStartGame;
             ApmCoreFixes.Log.LogDebug("OnMountEnd");
             __instance.OnMountEnd(true);
             ApmCoreFixes.Log.LogDebug("OnStartGameEnd");
@@ -186,8 +186,8 @@ namespace APMCoreFixes {
             ApmCoreFixes.Log.LogError("External: " + e.Data);
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(Apm.System.Warning.SceneManager), "OnStartGameEnd")]
-        static bool OnStartGameEnd(Apm.System.Warning.SceneManager __instance, bool isSucceeded) {
+        [HarmonyPrefix, HarmonyPatch(typeof(global::Apm.System.Warning.SceneManager), "OnStartGameEnd")]
+        static bool OnStartGameEnd(global::Apm.System.Warning.SceneManager __instance, bool isSucceeded) {
             if (isSucceeded) {
                 __instance.isStartGameEnd = true;
             } else {
@@ -197,8 +197,8 @@ namespace APMCoreFixes {
             return false;
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(Apm.System.Setup.SceneManager), "OnStartGameEnd")]
-        static bool OnStartGameEnd(Apm.System.Setup.SceneManager __instance, bool isSucceeded) {
+        [HarmonyPrefix, HarmonyPatch(typeof(global::Apm.System.Setup.SceneManager), "OnStartGameEnd")]
+        static bool OnStartGameEnd(global::Apm.System.Setup.SceneManager __instance, bool isSucceeded) {
             if (isSucceeded) {
                 __instance.isStartGameEnd = true;
             } else {
@@ -219,7 +219,7 @@ namespace APMCoreFixes {
             return false;
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(Apm.System.Daemon.Main), "IsRebootNeeded", MethodType.Getter)]
+        [HarmonyPrefix, HarmonyPatch(typeof(global::Apm.System.Daemon.Main), "IsRebootNeeded", MethodType.Getter)]
         static bool IsRebootNeeded(ref bool __result) {
             if (ApmCoreFixes.ConfigIgnoreReboots.Value) {
                 __result = false;

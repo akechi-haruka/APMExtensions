@@ -36,13 +36,11 @@ Copy-Item Resources\GeneralSetting.json $LauncherRoot\Apmv3System_Data\GeneralSe
 New-Item -Path $LauncherRoot\BepInEx\plugins -ItemType Directory
 Copy-Item APMCoreFixes\bin\Release\APMCoreFixes.* $LauncherRoot\BepInEx\plugins
 Copy-Item APMCoreFixes\bin\Release\Newtonsoft.* $LauncherRoot\BepInEx\plugins
-Copy-Item APMHeadbananaLink\bin\Release\APMHeadbananaLink.* $LauncherRoot\BepInEx\plugins
 Copy-Item emoneyUIFixes\bin\Release\emoneyUIFixes.* $LauncherRoot\BepInEx\plugins
-
-New-Item -Path $LauncherRoot\Apmv3System_Data\Plugins\x86_64 -ItemType Directory
-New-Item -Path $LauncherRoot\emoneyUI_Data\Plugins\x86_64 -ItemType Directory
-Copy-Item x64\Release\APMHeadbanana.dll $LauncherRoot\Apmv3System_Data\Plugins\x86_64\apmHeadphoneVolume.dll
-Copy-Item x64\Release\APMHeadbanana.dll $LauncherRoot\emoneyUI_Data\Plugins\x86_64\apmHeadphoneVolume.dll
+Copy-Item BananaphoneApmSystem\bin\Release\net481\BananaphoneApmSystem.* $LauncherRoot\BepInEx\plugins
+Copy-Item BananaphoneEmoneyUi\bin\Release\net481\BananaphoneEmoneyUi.* $LauncherRoot\BepInEx\plugins
+Copy-Item BananaphoneLib\bin\Release\BananaphoneLib.* $LauncherRoot\BepInEx\plugins
+Copy-Item Libs\naudio\* $LauncherRoot\BepInEx\plugins
 
 Copy-Item -Recurse EXMoney\bin\Release\net10.0-windows\win-x64 $LauncherRoot\EXMoney
 

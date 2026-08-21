@@ -8,7 +8,7 @@ using Apm.System.Setting.NonVolatile;
 using HarmonyLib;
 using static ABaaSGs;
 
-namespace APMCoreFixes {
+namespace Haruka.Arcade.Apm.CoreFixes {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     class ABaaSGsPatches {
         // add x_apmcf_folders for servers to unlock games

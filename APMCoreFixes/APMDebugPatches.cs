@@ -5,7 +5,7 @@ using Apm.System.Daemon;
 using Apm.System.Util.Image;
 using HarmonyLib;
 
-namespace APMCoreFixes {
+namespace Haruka.Arcade.Apm.CoreFixes {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     class APMDebugPatches {
         // WTF SEGA

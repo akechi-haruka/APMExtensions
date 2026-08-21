@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Haruka.Arcade.EMUICF {
+namespace Haruka.Arcade.Apm.EMUICF {
     public static class ModdingUtil {
         public static void ChangeButton(Button obj, UnityAction ev) {
             obj.onClick = new Button.ButtonClickedEvent();

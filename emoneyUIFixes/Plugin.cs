@@ -11,7 +11,7 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using Emoney.SharedMemory;
 using HarmonyLib;
-using Haruka.Arcade.EMUICF.External;
+using Haruka.Arcade.Apm.BananaphoneLib;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -19,10 +19,10 @@ using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using SceneManager = Apm.Emoney.Ui.SceneManager;
 
-namespace Haruka.Arcade.EMUICF {
-    [BepInPlugin("eu.haruka.apm.exmoneyui", "EMoneyUIExtended", "1.0")]
+namespace Haruka.Arcade.Apm.EMUICF {
+    [BepInPlugin("eu.haruka.apm.exmoneyui", "EMoneyUIExtended", "1.2")]
     [BepInProcess("emoneyUI")]
-    [BepInDependency("eu.haruka.apm.bananaphone", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("eu.haruka.apm.headphone.emui", BepInDependency.DependencyFlags.SoftDependency)]
     [UsedImplicitly]
     public class Plugin : BaseUnityPlugin {
         // Scene for the custom menu
@@ -30,8 +30,8 @@ namespace Haruka.Arcade.EMUICF {
 
         public static ConfigEntry<bool> ConfigDebugMaxSize;
         public static ConfigEntry<bool> ConfigSpeakerAdjustmentEnabled;
-        public static ConfigEntry<string> ConfigSpeakerChannelList;
-        public static ConfigEntry<string> ConfigHeadphoneChannelList;
+        public static ConfigEntry<VolumeType> ConfigHeadphoneVolumeType;
+        public static ConfigEntry<VolumeType> ConfigSpeakerVolumeType;
         public static ConfigEntry<bool> ConfigAllowExit;
         public static ConfigEntry<string> ConfigExDataPath;
         public static ConfigEntry<KeyboardShortcut> ConfigAppexReload;
@@ -61,12 +61,16 @@ namespace Haruka.Arcade.EMUICF {
 
             ConfigSpeakerAdjustmentEnabled = Config.Bind("General", "Enable Speaker Settings", true, "Allows players to change volume of the primary speakers");
             ConfigAllowExit = Config.Bind("General", "Enable Game Exit", true, "Allows players to exit game. Can be overridden from AppEx. See readme for more information.");
-            ConfigSpeakerChannelList = Config.Bind("General", "Speaker Channels", "0,1", "A comma seperated list of channels that should be adjusted from the \"Cabinet Speakers\" option.");
-            ConfigHeadphoneChannelList = Config.Bind("General", "Headphone Channels", "2,3", "A comma seperated list of channels that should be adjusted from the headphone volume option.");
 
-            Log.LogInfo("Checking APMHeadbananaLink...");
-            BananaBridge.Check();
-            Log.LogInfo("..." + (BananaBridge.IsWorking ? "success" : "failed"));
+            ConfigSpeakerVolumeType = Config.Bind("General", "Speaker Level", VolumeType.Front, new ConfigDescription("The level (volume slider) for speaker output."));
+            ConfigHeadphoneVolumeType = Config.Bind("General", "Headphone Level", VolumeType.Rear, new ConfigDescription("The level (volume slider) for headphone output."));
+
+            if (Headbanana.GetVersion() == Headbanana.EXPECTED_VERSION) {
+                Headbanana.SetLogCallback(s => Log.LogInfo("BananaphoneLib: " + s));
+                Headbanana.Initialize(ConfigSpeakerVolumeType.Value, ConfigHeadphoneVolumeType.Value);
+            } else {
+                Logger.LogError("Headbanana version invalid, expected " + Headbanana.EXPECTED_VERSION + ", got " + Headbanana.GetVersion());
+            }
 
             Harmony.CreateAndPatchAll(typeof(Patches), "eu.haruka.gmg.apm.fixes.emoneyui.main");
 

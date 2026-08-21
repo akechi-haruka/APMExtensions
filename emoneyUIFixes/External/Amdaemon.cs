@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Haruka.Arcade.EMUICF.External {
+namespace Haruka.Arcade.Apm.EMUICF.External {
     public class Amdaemon {
         [DllImport("amdaemon_api")]
         public static extern void Core_execute();

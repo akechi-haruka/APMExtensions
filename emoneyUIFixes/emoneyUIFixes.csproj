@@ -7,7 +7,7 @@
     <ProjectGuid>{7C856E5E-3CF1-49CA-B345-44DDE36D0414}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-      <RootNamespace>Haruka.Arcade.EMUICF</RootNamespace>
+      <RootNamespace>Haruka.Arcade.Apm.EMUICF</RootNamespace>
     <AssemblyName>emoneyUIFixes</AssemblyName>
     <TargetFrameworkVersion>4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -79,21 +79,20 @@
       <Compile Include="AppExConfig.cs"/>
       <Compile Include="ConfigurationManagerAttributes.cs"/>
       <Compile Include="External\Amdaemon.cs"/>
-      <Compile Include="External\BananaBridge.cs"/>
       <Compile Include="Images.cs"/>
       <Compile Include="MoreMenu.cs"/>
       <Compile Include="Plugin.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs" />
       <Compile Include="ModdingUtil.cs"/>
   </ItemGroup>
-  <ItemGroup>
-      <ProjectReference Include="..\APMHeadbananaLink\APMHeadbananaLink.csproj">
-          <Project>{c91294fd-329f-42d3-a4c2-fddd3721ab75}</Project>
-          <Name>APMHeadbananaLink</Name>
-    </ProjectReference>
-  </ItemGroup>
     <ItemGroup>
         <None Include="packages.config"/>
   </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\BananaphoneLib\BananaphoneLib.csproj">
+            <Project>{be7d72ef-a86c-4b62-83a6-7f3fe432c66b}</Project>
+            <Name>BananaphoneLib</Name>
+        </ProjectReference>
+    </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

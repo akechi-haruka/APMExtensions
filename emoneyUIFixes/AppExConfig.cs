@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
-namespace Haruka.Arcade.EMUICF {
+namespace Haruka.Arcade.Apm.EMUICF {
     [UsedImplicitly]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "UnassignedField.Global")]

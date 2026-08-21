@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{BE7D72EF-A86C-4B62-83A6-7F3FE432C66B}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Haruka.Arcade.Apm.BananaphoneLib</RootNamespace>
+        <AssemblyName>BananaphoneLib</AssemblyName>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="NAudio.Core">
+            <HintPath>..\Libs\naudio\NAudio.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="NAudio.Wasapi">
+            <HintPath>..\Libs\naudio\NAudio.Wasapi.dll</HintPath>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Headbanana.cs"/>
+        <Compile Include="MMDevice\CLSCTX.cs"/>
+        <Compile Include="MMDevice\EDataFlow.cs"/>
+        <Compile Include="MMDevice\ERole.cs"/>
+        <Compile Include="MMDevice\IAudioEndpointVolume.cs"/>
+        <Compile Include="MMDevice\IAudioVolumeLevel.cs"/>
+        <Compile Include="MMDevice\IConnector.cs"/>
+        <Compile Include="MMDevice\IDeviceTopology.cs"/>
+        <Compile Include="MMDevice\IMMDevice.cs"/>
+        <Compile Include="MMDevice\IMMDeviceEnumerator.cs"/>
+        <Compile Include="MMDevice\IPart.cs"/>
+        <Compile Include="MMDevice\IPartsList.cs"/>
+        <Compile Include="MMDevice\IPerChannelDbLevel.cs"/>
+        <Compile Include="MMDevice\SoundVolume.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="VolumeType.cs"/>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

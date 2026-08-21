@@ -7,7 +7,7 @@
     <ProjectGuid>{B8BF8051-E056-444A-9BC2-32CC4AF19CC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>APMCoreFixes</RootNamespace>
+      <RootNamespace>Haruka.Arcade.Apm.CoreFixes</RootNamespace>
     <AssemblyName>APMCoreFixes</AssemblyName>
     <TargetFrameworkVersion>4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using Apm.Emoney.Ui;
 using Emoney.SharedMemory;
-using Haruka.Arcade.APMHeadbanana;
-using Haruka.Arcade.EMUICF.External;
+using Haruka.Arcade.Apm.BananaphoneLib;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Haruka.Arcade.EMUICF {
+namespace Haruka.Arcade.Apm.EMUICF {
     public class MoreMenu : MonoBehaviour {
         private enum State {
             Initial,
@@ -105,8 +104,8 @@ namespace Haruka.Arcade.EMUICF {
                     bool atLeastOneAppExEnabled = Plugin.AppExConfig.exit.kill && Plugin.AppExConfig.exit.kill_process_name_list?.Length > 0;
 
                     SpawnButton(itemButtons, "Game Guide", Plugin.GuideData.pages?.Length > 0, ActionGameGuide);
-                    SpawnButton(itemButtons, "Cabinet\nSpeakers", Plugin.ConfigSpeakerAdjustmentEnabled.Value && BananaBridge.IsWorking, ActionSpeakerVolume);
-                    SpawnButton(itemButtons, "Audio Mode", Plugin.ConfigSpeakerAdjustmentEnabled.Value && BananaBridge.IsWorking, ActionAudioMode);
+                    SpawnButton(itemButtons, "Cabinet\nSpeakers", Plugin.ConfigSpeakerAdjustmentEnabled.Value, ActionSpeakerVolume);
+                    SpawnButton(itemButtons, "Audio Mode", Plugin.ConfigSpeakerAdjustmentEnabled.Value, ActionAudioMode);
                     SpawnButton(itemButtons, "Exit Game", Plugin.ConfigAllowExit.Value && atLeastOneAppExEnabled, ActionKillGame);
 
                     return;
@@ -269,18 +268,8 @@ namespace Haruka.Arcade.EMUICF {
         }
 
         private IEnumerator ActionSpeakerChange(bool speakers, bool headphones) {
-            float vol = Native.ApmHeadphoneVolumeGet();
-            int prevChannels = Native.ApmHeadphoneChannelsGet();
-
-            List<int> speakerChannels = Plugin.GetAudioChannels(Plugin.ConfigSpeakerChannelList.Value);
-            Native.ApmHeadphoneChannelsSet(speakerChannels.ToArray(), speakerChannels.Count);
-            Native.ApmHeadphoneVolumeSet(speakers ? vol : 0F);
-
-            List<int> headphoneChannels = Plugin.GetAudioChannels(Plugin.ConfigHeadphoneChannelList.Value);
-            Native.ApmHeadphoneChannelsSet(headphoneChannels.ToArray(), headphoneChannels.Count);
-            Native.ApmHeadphoneVolumeSet(headphones ? vol : 0F);
-
-            Native.ApmHeadphoneChannelsSetInt(prevChannels);
+            Headbanana.SetSpeakerVolume(speakers ? 50F : 0F);
+            Headbanana.SetHeadphoneVolumeForDefault(headphones ? Headbanana.GetHeadphoneVolumeForDefault() : 0F);
 
             yield return new WaitForSeconds(0.25F);
 
@@ -288,28 +277,11 @@ namespace Haruka.Arcade.EMUICF {
         }
 
         public void UpdateSpeakerVolumeFromCurrent() {
-            int prevChannels = Native.ApmHeadphoneChannelsGet();
-
-            List<int> speakerChannels = Plugin.GetAudioChannels(Plugin.ConfigSpeakerChannelList.Value);
-            Native.ApmHeadphoneChannelsSet(speakerChannels.ToArray(), speakerChannels.Count);
-
-            float vol = Native.ApmHeadphoneVolumeGet();
-
-            Native.ApmHeadphoneChannelsSetInt(prevChannels);
-
-            UpdateSpeakerVolumeDisplay(vol);
+            UpdateSpeakerVolumeDisplay(Headbanana.GetSpeakerVolume());
         }
 
         private void OnSpeakerVolumeChange(float vol) {
-            int prevChannels = Native.ApmHeadphoneChannelsGet();
-
-            List<int> speakerChannels = Plugin.GetAudioChannels(Plugin.ConfigSpeakerChannelList.Value);
-            Native.ApmHeadphoneChannelsSet(speakerChannels.ToArray(), speakerChannels.Count);
-
-            Native.ApmHeadphoneVolumeSet(vol);
-
-            Native.ApmHeadphoneChannelsSetInt(prevChannels);
-
+            Headbanana.SetSpeakerVolume(vol);
             UpdateSpeakerVolumeDisplay(vol);
         }
 
