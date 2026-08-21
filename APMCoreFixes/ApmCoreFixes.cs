@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace APMCoreFixes {
-    [BepInPlugin("eu.haruka.gmg.apm.fixes", "APMCoreFixes", "1.0")]
+    [BepInPlugin("eu.haruka.gmg.apm.fixes", "APMCoreFixes", "1.1")]
     [BepInProcess("Apmv3System")]
     [UsedImplicitly]
     public class ApmCoreFixes : BaseUnityPlugin {

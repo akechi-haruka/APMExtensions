@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using AMDaemon;
 using Apm.System.AbaasGs;
+using Apm.System.GameIconList;
 using Apm.System.Setting.Volatile;
 using Apm.System.UnityUtil;
 using Apm.System.Util.Log;
 using Apm.System.Warning;
 using HarmonyLib;
+using UnityEngine;
+using UnityEngine.UI;
 using static Apm.System.Daemon.Input;
 using static Apm.System.Error.ErrorResource;
+using Object = UnityEngine.Object;
 using SceneManager = Apm.System.GameIconList.SceneManager;
 
 namespace APMCoreFixes {
@@ -92,7 +98,9 @@ namespace APMCoreFixes {
                 return false;
             }
 
-            string gamePath = game.paths.images.Original;
+            string gamePath = Directory.GetParent(game.paths.images.Original).FullName;
+
+            ApmCoreFixes.Log.LogInfo("Target Path: " + gamePath);
 
             if (!File.Exists(Path.Combine(gamePath, "game.bat"))) {
                 ApmCoreFixes.Log.LogWarning("No game.bat in root directory found, falling back to actual start routine!");
@@ -129,7 +137,9 @@ namespace APMCoreFixes {
                 return false;
             }
 
-            string gamePath = game.paths.images.Original;
+            string gamePath = Directory.GetParent(game.paths.images.Original).FullName;
+
+            ApmCoreFixes.Log.LogInfo("Target Path: " + gamePath);
 
             if (!File.Exists(Path.Combine(gamePath, "game.bat"))) {
                 ApmCoreFixes.Log.LogWarning("No game.bat in root directory found, falling back to actual start routine!");
@@ -217,6 +227,78 @@ namespace APMCoreFixes {
             }
 
             return true;
+        }
+
+        // reimplement to allow more than 40 games
+        [HarmonyPrefix, HarmonyPatch(typeof(IconListGridCanvas), "Start")]
+        static bool Start(IconListGridCanvas __instance) {
+            foreach (object obj in __instance.gameObject.transform) {
+                Object.Destroy(((Transform)obj).gameObject);
+            }
+
+            List<AppInfo> list = (from info in AppListManager.GetInstance().Info.SelectableList
+                where info.New
+                orderby info.StartDate descending
+                select info).ToList();
+            list.AddRange((from info in AppListManager.GetInstance().Info.SelectableList
+                where !info.New
+                orderby info.StartDate descending
+                select info).ToList());
+
+            bool moddedPrefab = false;
+            GridLayoutGroup component = __instance.GetComponent<GridLayoutGroup>();
+            if (list.Count > 40) {
+                __instance.iconPrefab = __instance.iconPrefab40;
+                component.cellSize = new Vector2(115.5f, 115.5f);
+                component.spacing = new Vector2(50f, 47.5f);
+                component.constraintCount = 11;
+                __instance.iconCountMaxHorizontal = 11;
+                moddedPrefab = true;
+            } else if (list.Count > 24 || __instance.grid40Test) {
+                __instance.iconPrefab = __instance.iconPrefab40;
+                component.cellSize = new Vector2(135f, 135f);
+                component.spacing = new Vector2(50f, 65f);
+                component.constraintCount = 10;
+                __instance.iconCountMaxHorizontal = 10;
+            } else {
+                __instance.iconPrefab = __instance.iconPrefab24;
+                component.cellSize = new Vector2(180f, 180f);
+                component.spacing = new Vector2(50f, 90f);
+                component.constraintCount = 8;
+                __instance.iconCountMaxHorizontal = 8;
+            }
+
+            int count = 0;
+            foreach (AppInfo appInfo in list) {
+                IconGridCanvas component2 = Object.Instantiate(__instance.iconPrefab, __instance.transform).GetComponent<IconGridCanvas>();
+                component2.name = appInfo.SubGameId;
+                component2.Version = appInfo.Version;
+                component2.EMoney = appInfo.EMoney;
+                component2.Ui = appInfo.Ui;
+                component2.GamePad = appInfo.GamePad;
+                component2.VideoPanelAnim = __instance.videoPanel;
+                component2.Sound = __instance.soundManager;
+                component2.OnGameStart.AddListener(__instance.PlayButtonClick);
+                component2.ResetAdvertizeElapsedTime = __instance.resetAdvertizeElapsedTime;
+                component2.IsEnableNewIcon(appInfo.New);
+                Texture2D texture2D = new DynamicPngTexture().ReadFileAsTexture(appInfo.Paths.Icon);
+                component2.AppIcon.GetComponent<Image>().sprite = Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), Vector2.zero);
+                Transform text = component2.AppIcon.transform.Find("TextCanvas/TextArea/TitleText");
+                text.GetComponent<Text>().text = appInfo.TitleName;
+                if (moddedPrefab) {
+                    text.parent.transform.localPosition = new Vector3(-57.75F, -67.25F, 0);
+                    text.parent.GetComponent<RectTransform>().sizeDelta = new Vector2(97, 24);
+                }
+
+                component2.SetMediaFile(appInfo.SubGameId);
+                __instance.iconsOrder.Add(component2);
+
+                if (++count >= 55) {
+                    break;
+                }
+            }
+
+            return false;
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(InputSystem), "Update")]
