@@ -269,7 +269,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
 
         private IEnumerator ActionSpeakerChange(bool speakers, bool headphones) {
             Headbanana.SetSpeakerVolume(speakers ? 50F : 0F);
-            Headbanana.SetHeadphoneVolumeForDefault(headphones ? Headbanana.GetHeadphoneVolumeForDefault() : 0F);
+            Headbanana.SetHeadphoneVolumeForDefault(headphones ? 50F : 0F);
 
             yield return new WaitForSeconds(0.25F);
 
