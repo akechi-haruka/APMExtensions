@@ -10,7 +10,6 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
             iAudioVolumeLevelGuid = typeof(IAudioVolumeLevel).GUID;
             ksNodeTypeVolume = new Guid("3A5ACC00-C557-11D0-8A2B-00A0C9255AC1");
             channels = new IAudioVolumeLevel[4];
-            master = null;
             Available = Init();
         }
 
@@ -31,31 +30,26 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
                 return false;
             }
 
-            master.GetChannelCount(out int num);
-            uint num2 = 0U;
-            while (num2 < (ulong)num) {
-                master.SetChannelVolumeLevelScalar(num2, level / 100f, Guid.Empty);
-                num2 += 1U;
+            master.GetChannelCount(out int count);
+            for (uint i = 0; i < count; i++) {
+                master.SetChannelVolumeLevelScalar(i, level / 100f, Guid.Empty);
             }
 
             return true;
         }
 
         public bool GetMasterVolume(out uint level) {
-            level = 0U;
+            level = 0;
             if (!Available) {
                 return false;
             }
 
-            master.GetChannelCount(out int num);
-            uint num2 = 0U;
-            while (num2 < (ulong)num) {
-                master.GetChannelVolumeLevelScalar(num2, out float num3);
-                if ((uint)(num3 * 100f) > level) {
-                    level = (uint)(num3 * 100f);
+            master.GetChannelCount(out int count);
+            for (uint i = 0; i < count; i++) {
+                master.GetChannelVolumeLevelScalar(i, out float vol);
+                if ((uint)(vol * 100f) > level) {
+                    level = (uint)(vol * 100f);
                 }
-
-                num2 += 1U;
             }
 
             return true;
@@ -82,6 +76,9 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
                 case Channel.Woofer:
                     audioVolumeLevel = channels[3];
                     break;
+                default:
+                    Headbanana.Log("Unknown channel: " + ch);
+                    break;
             }
 
             if (audioVolumeLevel == null) {
@@ -89,22 +86,22 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
             }
 
             uint num = ch == Channel.FrontRight || ch == Channel.RearRight ? 1U : 0U;
-            audioVolumeLevel.GetLevelRange(num, out float num2, out float num3, out float num4);
-            float num5;
-            if (level > 0U) {
-                num5 = (float)Math.Log10(level / 100.0) * 20f;
-                num5 += num4;
+            audioVolumeLevel.GetLevelRange(num, out float min, out float max, out float step);
+            float targetVolume;
+            if (level > 0) {
+                targetVolume = (float)Math.Log10(level / 100.0) * 20f;
+                targetVolume += step;
             } else {
-                num5 = num2;
+                targetVolume = min;
             }
 
-            if (num5 < num2) {
-                num5 = num2;
-            } else if (num5 > num3) {
-                num5 = num3;
+            if (targetVolume < min) {
+                targetVolume = min;
+            } else if (targetVolume > max) {
+                targetVolume = max;
             }
 
-            audioVolumeLevel.SetLevel(num, num5, Guid.Empty);
+            audioVolumeLevel.SetLevel(num, targetVolume, Guid.Empty);
             return true;
         }
 
@@ -154,8 +151,8 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
             try {
                 Marshal.ThrowExceptionForHR(immdeviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.ERender, ERole.EMultimedia, out immdevice));
                 Marshal.ThrowExceptionForHR(immdevice.Activate(ref iDeviceTopologyGuid, 1, IntPtr.Zero, out object obj));
-                deviceTopology = obj as IDeviceTopology;
-                Marshal.ThrowExceptionForHR(deviceTopology.GetConnector(0U, out connector));
+                deviceTopology = (IDeviceTopology)obj;
+                Marshal.ThrowExceptionForHR(deviceTopology.GetConnector(0, out connector));
                 Marshal.ThrowExceptionForHR(connector.GetConnectedTo(out connector2));
                 Marshal.QueryInterface(Marshal.GetIUnknownForObject(connector2), ref iPartGuid, out IntPtr zero);
                 part = (IPart)Marshal.GetObjectForIUnknown(zero);
@@ -229,7 +226,7 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
             }
 
             partsList.GetCount(out uint count);
-            for (uint i = 0U; i < count; i += 1U) {
+            for (uint i = 0; i < count; i++) {
                 IPart part = null;
                 try {
                     Marshal.ThrowExceptionForHR(partsList.GetPart(i, out part));
@@ -259,7 +256,7 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
 
         private IAudioEndpointVolume master;
 
-        public bool Available;
+        public bool Available { get; private set; }
 
         public enum Channel : uint {
             FrontLeft,
