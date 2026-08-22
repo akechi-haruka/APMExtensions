@@ -142,7 +142,7 @@ namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
 
         private bool Init() {
             Headbanana.Log("Initializing WASAPI");
-            IMMDeviceEnumerator immdeviceEnumerator = MMDeviceEnumeratorFactory.CreateInstance();
+            IMMDeviceEnumerator immdeviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumeratorComObject();
             IMMDevice immdevice = null;
             IDeviceTopology deviceTopology = null;
             IConnector connector = null;

@@ -56,10 +56,13 @@
         <Compile Include="MMDevice\IConnector.cs"/>
         <Compile Include="MMDevice\IDeviceTopology.cs"/>
         <Compile Include="MMDevice\IMMDevice.cs"/>
+        <Compile Include="MMDevice\IMMDeviceCollection.cs"/>
         <Compile Include="MMDevice\IMMDeviceEnumerator.cs"/>
+        <Compile Include="MMDevice\IMMNotificationClient.cs"/>
         <Compile Include="MMDevice\IPart.cs"/>
         <Compile Include="MMDevice\IPartsList.cs"/>
         <Compile Include="MMDevice\IPerChannelDbLevel.cs"/>
+        <Compile Include="MMDevice\PropertyKey.cs"/>
         <Compile Include="MMDevice\SoundVolume.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="VolumeType.cs"/>

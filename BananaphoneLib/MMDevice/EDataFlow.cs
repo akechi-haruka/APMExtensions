@@ -2,7 +2,7 @@
 
 namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    enum EDataFlow {
+    public enum EDataFlow {
         ERender,
         ECapture,
         EAll,

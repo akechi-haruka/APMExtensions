@@ -2,7 +2,7 @@
 
 namespace Haruka.Arcade.Apm.BananaphoneLib.MMDevice {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    enum ERole {
+    public enum ERole {
         EConsole,
         EMultimedia,
         ECommunications,
