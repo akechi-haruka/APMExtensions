@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
@@ -9,19 +10,19 @@ namespace Haruka.Arcade.Apm.EMUICF {
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     [SuppressMessage("ReSharper", "CollectionNeverQueried.Global")]
     [Serializable]
-    public struct AppExConfig {
+    public class AppExConfig {
         public int version;
         public Exit exit;
         public LedSettings led;
 
         [Serializable]
-        public struct Exit {
+        public class Exit {
             public bool kill;
             public String[] kill_process_name_list;
         }
 
         [Serializable]
-        public struct LedSettings {
+        public class LedSettings {
             public bool block_user_change;
             public bool ignore;
             public byte r;
@@ -30,28 +31,32 @@ namespace Haruka.Arcade.Apm.EMUICF {
         }
 
         [Serializable]
-        public struct GuideInfo {
-            public int width;
-            public int height;
-            public GuidePage[] pages;
+        public class GuideInfo {
+            public int width = 800;
+            public int height = 400;
+            public List<GuidePage> pages = new List<GuidePage>();
         }
 
         [Serializable]
-        public struct GuidePage {
+        public class GuidePage {
             public String title;
             public String text;
             public String file;
             public String align;
-            public GuideContent content;
+            public GuideContent content = new GuideContent();
+
+            public override string ToString() {
+                return title;
+            }
         }
 
         [Serializable]
-        public struct GuideContent {
-            public String align;
-            public GuideButton[] buttons;
+        public class GuideContent {
+            public String align = "center";
+            public List<GuideButton> buttons = new List<GuideButton>();
         }
 
-        public struct GuideButton {
+        public class GuideButton {
             public int x;
             public int y;
             public bool center;
@@ -59,6 +64,10 @@ namespace Haruka.Arcade.Apm.EMUICF {
             public int height;
             public String text;
             public int target;
+
+            public override string ToString() {
+                return "Button: " + text;
+            }
         }
     }
 }
