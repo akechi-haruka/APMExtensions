@@ -94,7 +94,9 @@ namespace Haruka.Arcade.Apm.EMUICF {
                 try {
                     LedManager = new LedManager(Log, ApmGeneralSetting.ledSetting.portNumber);
                     LedManager.Connect();
-                    LedManager.Set(Color.FromArgb(AppExConfig.led.r, AppExConfig.led.g, AppExConfig.led.b));
+                    if (!AppExConfig.led.ignore) {
+                        LedManager.Set(Color.FromArgb(AppExConfig.led.r, AppExConfig.led.g, AppExConfig.led.b));
+                    }
                 } catch (Exception ex) {
                     Log.LogError("Error setting up LED board: " + ex);
                 }

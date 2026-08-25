@@ -23,6 +23,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
         [Serializable]
         public struct LedSettings {
             public bool block_user_change;
+            public bool ignore;
             public byte r;
             public byte g;
             public byte b;
