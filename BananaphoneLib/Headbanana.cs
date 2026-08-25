@@ -167,7 +167,7 @@ namespace Haruka.Arcade.Apm.BananaphoneLib {
 
             Headbanana.Log("Channel setup:");
             foreach (VolumeType t in Enum.GetValues(typeof(VolumeType))) {
-                Headbanana.Log(t + ": " + (channels[t]?.ToString() ?? "NOT AVAILABLE"));
+                Headbanana.Log(t + ": " + (channels.TryGetValue(t, out AudioVolumeLevel channel) ? channel?.ToString() : "NOT AVAILABLE"));
             }
 
             enumerator.Dispose();
