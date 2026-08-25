@@ -1,0 +1,18 @@
+site_name: APMExtensions
+docs_dir: ../Wiki
+site_url: https://gmg.hopto.org:82/apmex
+repo_url: https://github.com/akechi-haruka/APMExtensions
+use_directory_urls: false
+edit_uri_template: 'wiki/{path_noext}/_edit'
+nav:
+  - Home: Home.md
+  - Setup: 010-‐-APM-only.md
+  - Non-APM: 020-‐-Non‐APM-games.md
+  - Non-SEGA: 030-‐-Non‐SEGA-games.md
+hooks:
+  - fix_file_extensions.py
+validation:
+  links:
+    absolute_links: relative_to_docs
+    anchors: warn
+    unrecognized_links: warn
