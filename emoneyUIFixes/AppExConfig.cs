@@ -12,13 +12,13 @@ namespace Haruka.Arcade.Apm.EMUICF {
     [Serializable]
     public class AppExConfig {
         public int version;
-        public Exit exit;
-        public LedSettings led;
+        public Exit exit = new Exit();
+        public LedSettings led = new LedSettings();
 
         [Serializable]
         public class Exit {
             public bool kill;
-            public String[] kill_process_name_list;
+            public String[] kill_process_name_list = new String[0];
         }
 
         [Serializable]

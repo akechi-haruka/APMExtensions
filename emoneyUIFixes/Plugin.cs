@@ -94,7 +94,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
                 try {
                     LedManager = new LedManager(Log, ApmGeneralSetting.ledSetting.portNumber);
                     LedManager.Connect();
-                    if (!AppExConfig.led.ignore) {
+                    if (!AppExConfig.led.ignore && !(AppExConfig.led.r == 0 && AppExConfig.led.g == 0 && AppExConfig.led.b == 0)) {
                         LedManager.Set(Color.FromArgb(AppExConfig.led.r, AppExConfig.led.g, AppExConfig.led.b));
                     }
                 } catch (Exception ex) {
@@ -140,6 +140,10 @@ namespace Haruka.Arcade.Apm.EMUICF {
                 }
             }
 
+            if (AppExConfig == null) {
+                AppExConfig = new AppExConfig();
+            }
+
             Log.LogInfo("..." + (AppExConfig.version > 0 ? "success" : "failed"));
 
             path = Path.Combine(ConfigExDataPath.Value, "guide.json");
@@ -152,7 +156,11 @@ namespace Haruka.Arcade.Apm.EMUICF {
                 }
             }
 
-            Log.LogInfo("..." + (GuideData.width > 0 ? "success" : "failed"));
+            if (GuideData == null) {
+                GuideData = new AppExConfig.GuideInfo();
+            }
+
+            Log.LogInfo("..." + (GuideData.pages?.Count > 0 ? "success" : "failed"));
         }
 
         [UsedImplicitly]
