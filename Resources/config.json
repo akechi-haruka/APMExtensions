@@ -5,5 +5,11 @@
     "kill_process_name_list": [
       "dummy.exe"
     ]
+  },
+  "led": {
+    "block_user_change": false,
+    "r": 255,
+    "g": 255,
+    "b": 255
   }
 }

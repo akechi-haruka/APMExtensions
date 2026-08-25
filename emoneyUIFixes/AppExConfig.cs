@@ -12,11 +12,20 @@ namespace Haruka.Arcade.Apm.EMUICF {
     public struct AppExConfig {
         public int version;
         public Exit exit;
+        public LedSettings led;
 
         [Serializable]
         public struct Exit {
             public bool kill;
             public String[] kill_process_name_list;
+        }
+
+        [Serializable]
+        public struct LedSettings {
+            public bool block_user_change;
+            public byte r;
+            public byte g;
+            public byte b;
         }
 
         [Serializable]

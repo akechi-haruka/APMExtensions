@@ -18,7 +18,8 @@ namespace Haruka.Arcade.Apm.EMUICF {
             Wait,
             SpeakerVolume,
             SelectAudioMode,
-            GameGuide
+            GameGuide,
+            CabinetLeds
         }
 
         private const float TIMEOUT = 30f;
@@ -30,6 +31,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
         private float? timeRemaining;
         private State menuState;
         private int currentGuidePage;
+        private Color currentLedColor;
 
         private State MenuState {
             set {
@@ -88,7 +90,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
 
         private void ChangeState(State next) {
             if (next != State.Initial) {
-                timeRemaining = TIMEOUT;
+                timeRemaining = Plugin.ConfigDisableTimeout.Value ? Single.MaxValue : TIMEOUT;
             }
 
             menuState = next;
@@ -104,6 +106,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
                     bool atLeastOneAppExEnabled = Plugin.AppExConfig.exit.kill && Plugin.AppExConfig.exit.kill_process_name_list?.Length > 0;
 
                     SpawnButton(itemButtons, "Game Guide", Plugin.GuideData.pages?.Length > 0, ActionGameGuide);
+                    SpawnButton(itemButtons, "Cabinet\nLights", Plugin.AllowLedControl, ActionCabinetLights);
                     SpawnButton(itemButtons, "Cabinet\nSpeakers", Plugin.ConfigSpeakerAdjustmentEnabled.Value, ActionSpeakerVolume);
                     SpawnButton(itemButtons, "Audio Mode", Plugin.ConfigSpeakerAdjustmentEnabled.Value, ActionAudioMode);
                     SpawnButton(itemButtons, "Exit Game", Plugin.ConfigAllowExit.Value && atLeastOneAppExEnabled, ActionKillGame);
@@ -121,6 +124,8 @@ namespace Haruka.Arcade.Apm.EMUICF {
                 case State.SelectAudioMode:
                     header.GetComponent<Animator>().SetTrigger("Show");
                     HeaderText = "Select Audio Mode";
+
+                    Plugin.SaveCurrentAudioVolume();
 
                     SpawnButton(audioModeButtons, "Normal", true, ActionSpeakersNormal);
                     SpawnButton(audioModeButtons, "Speakers\nonly", true, ActionSpeakersOnly);
@@ -152,6 +157,26 @@ namespace Haruka.Arcade.Apm.EMUICF {
                     ChangeGuidePage(0);
 
                     return;
+                case State.CabinetLeds:
+                    header.GetComponent<Animator>().SetTrigger("Show");
+                    HeaderText = "Cabinet Light Color";
+
+                    AppExConfig.LedSettings settings = Plugin.AppExConfig.led;
+
+                    SetLedUi(settings.r / 255F, settings.g / 255F, settings.b / 255F, true);
+
+                    itemButtons.SetActive(false);
+                    ledSubFrame.SetActive(true);
+
+                    // not sure why I need to do this here instead of the init function
+                    ledSliderR.transform.position = new Vector3(200, 94, 0);
+                    ledSliderG.transform.position = new Vector3(500, 94, 0);
+                    ledSliderB.transform.position = new Vector3(800, 94, 0);
+                    ledValueR.transform.localPosition = new Vector3(0, -40, 0);
+                    ledValueG.transform.localPosition = new Vector3(0, -40, 0);
+                    ledValueB.transform.localPosition = new Vector3(0, -40, 0);
+
+                    return;
                 default:
                     return;
             }
@@ -168,6 +193,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
             prevGuidePageButton.SetActive(false);
             nextGuidePageButton.SetActive(false);
             guide.SetActive(false);
+            ledSubFrame.SetActive(false);
             header.GetComponent<Image>().color = normalColor;
             pinButton.transform.Find("Text").GetComponent<Text>().text = "Pin";
 
@@ -238,6 +264,10 @@ namespace Haruka.Arcade.Apm.EMUICF {
             ChangeState(State.SelectAudioMode);
         }
 
+        private void ActionCabinetLights(int _) {
+            ChangeState(State.CabinetLeds);
+        }
+
         private void ActionKillGame(int arg0) {
             cancelButton.GetComponent<Button>().interactable = false;
             ChangeState(State.Wait);
@@ -268,8 +298,8 @@ namespace Haruka.Arcade.Apm.EMUICF {
         }
 
         private IEnumerator ActionSpeakerChange(bool speakers, bool headphones) {
-            Headbanana.SetSpeakerVolume(speakers ? 50F : 0F);
-            Headbanana.SetHeadphoneVolumeForDefault(headphones ? 50F : 0F);
+            Headbanana.SetSpeakerVolume(speakers ? Plugin.SavedSpeakerVolume : 0F);
+            Headbanana.SetHeadphoneVolumeForDefault(headphones ? Plugin.SavedHeadphoneVolume : 0F);
 
             yield return new WaitForSeconds(0.25F);
 
@@ -289,6 +319,46 @@ namespace Haruka.Arcade.Apm.EMUICF {
             speakerSubFrame.transform.Find("Slider").GetComponent<Slider>().value = vol;
             speakerSubFrame.transform.Find("HeadphoneIcon/Right").GetComponent<HeadphoneVolumeIcon>().Volume = (int)vol;
             speakerSubFrame.transform.Find("Value").GetComponent<Text>().text = ((int)vol).ToString();
+        }
+
+        #endregion
+
+        #region LEDs
+
+        public void SetLedUi(float r, float g, float b, bool setSliders = false) {
+            currentLedColor = new Color(r, g, b);
+            header.GetComponent<Image>().color = currentLedColor;
+
+            UpdateSlider(ledSliderR.transform, ledValueR.transform, r, setSliders);
+            UpdateSlider(ledSliderG.transform, ledValueG.transform, g, setSliders);
+            UpdateSlider(ledSliderB.transform, ledValueB.transform, b, setSliders);
+
+            if (timeRemaining < TIMEOUT) {
+                timeRemaining = TIMEOUT;
+            }
+        }
+
+        private void UpdateSlider(Transform slider, Transform value, float vol, bool setPosition) {
+            if (setPosition) {
+                slider.GetComponent<Slider>().value = vol * 100;
+            }
+
+            value.GetComponent<Text>().text = ((int)(vol * 255)).ToString();
+        }
+
+        private void OnLedRgbChangeR(float value) {
+            SetLedUi(value / 100F, currentLedColor.g, currentLedColor.b);
+            Plugin.LedManager.Set(currentLedColor);
+        }
+
+        private void OnLedRgbChangeG(float value) {
+            SetLedUi(currentLedColor.r, value / 100F, currentLedColor.b);
+            Plugin.LedManager.Set(currentLedColor);
+        }
+
+        private void OnLedRgbChangeB(float value) {
+            SetLedUi(currentLedColor.r, currentLedColor.g, value / 100F);
+            Plugin.LedManager.Set(currentLedColor);
         }
 
         #endregion
@@ -425,8 +495,16 @@ namespace Haruka.Arcade.Apm.EMUICF {
         private GameObject guide;
         private GameObject guideImage;
         private readonly List<GameObject> guidePageButtons = new List<GameObject>();
+        private GameObject ledSubFrame;
+        private GameObject ledSliderR;
+        private GameObject ledSliderG;
+        private GameObject ledSliderB;
+        private GameObject ledValueR;
+        private GameObject ledValueG;
+        private GameObject ledValueB;
 
         public void InitializeModdedObjectsFromCopy(EmoneyMenu emenu) {
+            // original stuff
             sceneManager = emenu.sceneManager;
             header = emenu.header;
             frame = emenu.frame;
@@ -439,15 +517,18 @@ namespace Haruka.Arcade.Apm.EMUICF {
             blueFrameSprite = emenu.payToCoinFrameSprite;
             greenFrameSprite = emenu.balanceFrameSprite;
 
+            // frame
             contents = frame.transform.Find("Contents").gameObject;
 
             Button cancelButtonComp = cancelButton.GetComponent<Button>();
             ModdingUtil.ChangeButton(cancelButtonComp, OnClickCancel);
             cancelButtonComp.interactable = true;
 
+            // audio mode
             audioModeButtons = Instantiate(itemButtons, itemButtons.transform.parent);
             audioModeButtons.name = "AudioModeButtons";
 
+            // speaker volume
             speakerSubFrame = Instantiate(GameObject.Find("Canvas/Headphone/Frame/Contents/Main"), contents.transform.Find("Main"));
             speakerSubFrame.name = "SpeakerSubFrame";
             speakerSubFrame.transform.localPosition = Vector3.zero;
@@ -458,6 +539,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
             ModdingUtil.ChangeSlider(speakerSubFrame.transform.Find("Slider").GetComponent<Slider>(), OnSpeakerVolumeChange);
             UpdateSpeakerVolumeFromCurrent();
 
+            // game guide
             guide = new GameObject("GameGuide") {
                 transform = {
                     parent = contents.transform.Find("Main"),
@@ -480,13 +562,49 @@ namespace Haruka.Arcade.Apm.EMUICF {
             RectTransform rt = guideImage.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(Plugin.GuideData.width, Plugin.GuideData.height);
 
+            // game guide frame
             prevGuidePageButton = CloneAndRewireButton(cancelButton.transform.parent, "PrevPageButton", "<<", new Vector2(50, 40), Images.BLUE_BUTTON_TEXTURE, PrevGuidePage);
             pinButton = CloneAndRewireButton(cancelButton.transform.parent, "PinButton", "Pin", new Vector2(75, 40), Images.GREEN_BUTTON_TEXTURE, PinMenu);
             nextGuidePageButton = CloneAndRewireButton(cancelButton.transform.parent, "NextPageButton", ">>", new Vector2(50, 40), Images.BLUE_BUTTON_TEXTURE, NextGuidePage);
 
+            // leds
+            ledSubFrame = Instantiate(GameObject.Find("Canvas/Headphone/Frame/Contents/Main"), contents.transform.Find("Main"));
+            ledSubFrame.name = "LedSubFrame";
+            ledSubFrame.transform.localPosition = Vector3.zero;
+
+            GameObject originalSlider = ledSubFrame.transform.Find("Slider").gameObject;
+            GameObject originalValue = ledSubFrame.transform.Find("Value").gameObject;
+            ledSliderR = Instantiate(originalSlider, ledSubFrame.transform);
+            ledSliderR.name = "SliderR";
+            ledSliderR.GetComponent<RectTransform>().sizeDelta = new Vector2(250F, 20F);
+            ledSliderG = Instantiate(originalSlider, ledSubFrame.transform);
+            ledSliderG.name = "SliderG";
+            ledSliderG.GetComponent<RectTransform>().sizeDelta = new Vector2(250F, 20F);
+            ledSliderB = Instantiate(originalSlider, ledSubFrame.transform);
+            ledSliderB.name = "SliderB";
+            ledSliderB.GetComponent<RectTransform>().sizeDelta = new Vector2(250F, 20F);
+            ledValueR = Instantiate(originalValue, ledSliderR.transform);
+            ledValueR.name = "ValueR";
+            ledValueR.GetComponent<Text>().color = new Color(1, 0, 0);
+            ledValueG = Instantiate(originalValue, ledSliderG.transform);
+            ledValueG.name = "ValueG";
+            ledValueG.GetComponent<Text>().color = new Color(0, 1, 0);
+            ledValueB = Instantiate(originalValue, ledSliderB.transform);
+            ledValueB.name = "ValueB";
+            ledValueB.GetComponent<Text>().color = new Color(0, 0, 1);
+
+
+            ModdingUtil.ChangeSlider(ledSliderR.GetComponent<Slider>(), OnLedRgbChangeR);
+            ModdingUtil.ChangeSlider(ledSliderG.GetComponent<Slider>(), OnLedRgbChangeG);
+            ModdingUtil.ChangeSlider(ledSliderB.GetComponent<Slider>(), OnLedRgbChangeB);
+
+            // cleanup
             DestroyImmediate(contents.transform.Find("Main/BrandButtons").gameObject);
             DestroyImmediate(contents.transform.Find("Main/ItemButtons/Check").gameObject);
             DestroyImmediate(contents.transform.Find("Main/AudioModeButtons/Check").gameObject);
+            DestroyImmediate(ledSubFrame.transform.Find("HeadphoneIcon").gameObject);
+            DestroyImmediate(originalSlider);
+            DestroyImmediate(originalValue);
         }
 
         private GameObject CloneAndRewireButton(Transform parent, String objectName, String label, Vector2 size, String imageBase64, UnityAction action) {

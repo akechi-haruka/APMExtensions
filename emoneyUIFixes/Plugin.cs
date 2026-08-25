@@ -12,15 +12,17 @@ using BepInEx.Logging;
 using Emoney.SharedMemory;
 using HarmonyLib;
 using Haruka.Arcade.Apm.BananaphoneLib;
+using Haruka.Arcade.Apm.EMUICF.External;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
+using Color = Haruka.Arcade.SEGA835Lib.Misc.Color;
 using Object = UnityEngine.Object;
 using SceneManager = Apm.Emoney.Ui.SceneManager;
 
 namespace Haruka.Arcade.Apm.EMUICF {
-    [BepInPlugin("eu.haruka.apm.exmoneyui", "EMoneyUIExtended", "1.2")]
+    [BepInPlugin("eu.haruka.apm.exmoneyui", "EMoneyUIExtended", "1.3")]
     [BepInProcess("emoneyUI")]
     [BepInDependency("eu.haruka.apm.headphone.emui", BepInDependency.DependencyFlags.SoftDependency)]
     [UsedImplicitly]
@@ -33,6 +35,8 @@ namespace Haruka.Arcade.Apm.EMUICF {
         public static ConfigEntry<VolumeType> ConfigHeadphoneVolumeType;
         public static ConfigEntry<VolumeType> ConfigSpeakerVolumeType;
         public static ConfigEntry<bool> ConfigAllowExit;
+        public static ConfigEntry<bool> ConfigEnableLedControl;
+        public static ConfigEntry<bool> ConfigDisableTimeout;
         public static ConfigEntry<string> ConfigExDataPath;
         public static ConfigEntry<KeyboardShortcut> ConfigAppexReload;
 
@@ -40,8 +44,12 @@ namespace Haruka.Arcade.Apm.EMUICF {
 
         internal static AppExConfig AppExConfig;
         internal static AppExConfig.GuideInfo GuideData;
+        internal static GeneralSetting ApmGeneralSetting;
         internal static SceneManager SceneManager;
         internal static Plugin Self;
+        internal static LedManager LedManager;
+        internal static float SavedSpeakerVolume = 50F;
+        internal static float SavedHeadphoneVolume = 50F;
 
         [UsedImplicitly]
         public void Awake() {
@@ -58,12 +66,17 @@ namespace Haruka.Arcade.Apm.EMUICF {
             ConfigAppexReload = Config.Bind("Debug", "Reload AppEx", new KeyboardShortcut(KeyCode.F11), new ConfigDescription("This key reloads appex.json, useful for working on game guides.", null, new ConfigurationManagerAttributes() {
                 IsAdvanced = true
             }));
+            ConfigDisableTimeout = Config.Bind("Debug", "Disable Menu Timeout", false, new ConfigDescription("Disable the 30 second menu auto-close timeout.", null, new ConfigurationManagerAttributes() {
+                IsAdvanced = true
+            }));
 
             ConfigSpeakerAdjustmentEnabled = Config.Bind("General", "Enable Speaker Settings", true, "Allows players to change volume of the primary speakers");
             ConfigAllowExit = Config.Bind("General", "Enable Game Exit", true, "Allows players to exit game. Can be overridden from AppEx. See readme for more information.");
 
             ConfigSpeakerVolumeType = Config.Bind("General", "Speaker Level", VolumeType.Front, new ConfigDescription("The level (volume slider) for speaker output."));
             ConfigHeadphoneVolumeType = Config.Bind("General", "Headphone Level", VolumeType.Rear, new ConfigDescription("The level (volume slider) for headphone output."));
+
+            ConfigEnableLedControl = Config.Bind("General", "Enable LED control", true, new ConfigDescription("Allows AppEx and players to control cabinet LEDs."));
 
             if (Headbanana.GetVersion() == Headbanana.EXPECTED_VERSION) {
                 Headbanana.SetLogCallback(s => Log.LogInfo("BananaphoneLib: " + s));
@@ -75,8 +88,42 @@ namespace Haruka.Arcade.Apm.EMUICF {
             Harmony.CreateAndPatchAll(typeof(Patches), "eu.haruka.gmg.apm.fixes.emoneyui.main");
 
             ReloadAppEx();
+            ReloadGeneralSettings();
+
+            if (ApmGeneralSetting.ledSetting?.portNumber > 0 && ConfigEnableLedControl.Value) {
+                try {
+                    LedManager = new LedManager(Log, ApmGeneralSetting.ledSetting.portNumber);
+                    LedManager.Connect();
+                    LedManager.Set(Color.FromArgb(AppExConfig.led.r, AppExConfig.led.g, AppExConfig.led.b));
+                } catch (Exception ex) {
+                    Log.LogError("Error setting up LED board: " + ex);
+                }
+            }
 
             Log.LogInfo("Loaded");
+        }
+
+        [UsedImplicitly]
+        public void OnApplicationQuit() {
+            LedManager?.Disconnect();
+        }
+
+        public static bool AllowLedControl {
+            get { return ApmGeneralSetting.ledSetting?.portNumber > 0 && ConfigEnableLedControl.Value && !AppExConfig.led.block_user_change && (LedManager?.Connected ?? false); }
+        }
+
+        private void ReloadGeneralSettings() {
+            string path = Path.Combine("Apmv3System_Data", "GeneralSetting.json");
+            Log.LogInfo("Checking GeneralSetting at " + path + "...");
+            if (File.Exists(path)) {
+                try {
+                    ApmGeneralSetting = JsonConvert.DeserializeObject<GeneralSetting>(File.ReadAllText(path));
+                } catch (Exception ex) {
+                    Log.LogError("Failed to read GeneralSetting: " + ex);
+                }
+            }
+
+            Log.LogInfo("..." + (ApmGeneralSetting.ledSetting?.portNumber > 0 ? "success" : "failed"));
         }
 
         private void ReloadAppEx() {
@@ -166,6 +213,18 @@ namespace Haruka.Arcade.Apm.EMUICF {
         public static void OnModSettingsButton() {
             Log.LogDebug("Mod button clicked");
             SceneManager.MenuState = MOD_MENU_STATE;
+        }
+
+        public static void SaveCurrentAudioVolume() {
+            float vol = Headbanana.GetSpeakerVolume();
+            if (vol > 0) {
+                SavedSpeakerVolume = vol;
+            }
+
+            vol = Headbanana.GetHeadphoneVolumeForDefault();
+            if (vol > 0) {
+                SavedHeadphoneVolume = vol;
+            }
         }
     }
 
