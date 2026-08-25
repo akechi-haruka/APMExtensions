@@ -27,16 +27,9 @@ Head to the [Wiki](https://github.com/akechi-haruka/APMExtensions/wiki).
 * Skip Japan warning
 * Use root directory instead of App directory for launched games. See wiki for extra instructions.
 
-### APMHeadbanana
+### Bananaphone
 
-Replacement DLL to make APM headphone controls customizable.
-
-By default, replacing apmHeadphoneVolume.dll with no further configuration will make the headphone volume slider in
-Apmv3System and emoneyUI adjust the main left/right speaker volume.
-
-### APMHeadbananaLink
-
-Allows setting the audio channels that APMHeadbanana changes.
+Makes APM headphone controls customizable. Can use native COM access or NAudio as a backend.
 
 ### emoneyUIFixes
 
