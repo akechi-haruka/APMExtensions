@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="EXMoney" type="DotNetFolderPublish" factoryName="Publish to folder">
+        <riderPublish configuration="Release" platform="Any CPU" produce_single_file="true"
+                      target_folder="$PROJECT_DIR$/EXMoney/bin/Release/net8.0-windows/win-x64/publish"
+                      target_framework="net10.0-windows" uuid_high="6511789539828648901"
+                      uuid_low="-5576360415195497151">
+            <runtimes>
+                <item value="win-x64"/>
+            </runtimes>
+        </riderPublish>
+        <method v="2"/>
+    </configuration>
+</component>
