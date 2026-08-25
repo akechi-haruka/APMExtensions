@@ -127,6 +127,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
 
                     Plugin.SaveCurrentAudioVolume();
 
+                    SpawnButton(audioModeButtons, "Mute", true, ActionSpeakersMute);
                     SpawnButton(audioModeButtons, "Normal", true, ActionSpeakersNormal);
                     SpawnButton(audioModeButtons, "Speakers\nonly", true, ActionSpeakersOnly);
                     SpawnButton(audioModeButtons, "Headphones\nonly", true, ActionHeadphonesOnly);
@@ -281,6 +282,11 @@ namespace Haruka.Arcade.Apm.EMUICF {
         #endregion
 
         #region Speaker Mode Menu
+
+        private void ActionSpeakersMute(int _) {
+            ChangeState(State.Wait);
+            StartCoroutine(ActionSpeakerChange(false, false));
+        }
 
         private void ActionSpeakersNormal(int _) {
             ChangeState(State.Wait);
