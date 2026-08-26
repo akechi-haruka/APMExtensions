@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Haruka.Arcade.Apm.GameGuideEditor;
 
-public partial class FormMain : Form {
+public sealed partial class FormMain : Form {
     private readonly Preview preview;
     private AppExConfig.GuideInfo data = new AppExConfig.GuideInfo();
 
@@ -10,6 +10,7 @@ public partial class FormMain : Form {
 
     public FormMain() {
         InitializeComponent();
+        Text += " 1.4";
         preview = new Preview();
         preview.Show(this);
     }
