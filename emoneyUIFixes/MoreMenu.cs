@@ -101,7 +101,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
                     return;
                 case State.SelectAction: {
                     header.GetComponent<Animator>().SetTrigger("Show");
-                    HeaderText = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+                    HeaderText = DateTime.Now.ToString("yyyy-MM-dd (dddd) HH:mm", CultureInfo.CurrentCulture);
                     itemButtons.SetActive(true);
 
                     bool atLeastOneAppExEnabled = Plugin.AppExConfig.exit.kill && Plugin.AppExConfig.exit.kill_process_name_list?.Length > 0;
