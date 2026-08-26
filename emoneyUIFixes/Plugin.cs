@@ -22,7 +22,7 @@ using Object = UnityEngine.Object;
 using SceneManager = Apm.Emoney.Ui.SceneManager;
 
 namespace Haruka.Arcade.Apm.EMUICF {
-    [BepInPlugin("eu.haruka.apm.exmoneyui", "EMoneyUIExtended", "1.3")]
+    [BepInPlugin("eu.haruka.apm.exmoneyui", "EMoneyUIExtended", "1.4")]
     [BepInProcess("emoneyUI")]
     [BepInDependency("eu.haruka.apm.headphone.emui", BepInDependency.DependencyFlags.SoftDependency)]
     [UsedImplicitly]

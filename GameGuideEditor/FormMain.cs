@@ -61,12 +61,19 @@ public partial class FormMain : Form {
                 UpdateTargetIds();
 
                 string filePath = Path.Combine(folderBrowserDialog.SelectedPath, "guide.json");
+                string guideDataPath = Path.Combine(folderBrowserDialog.SelectedPath, "Guide");
+
+                if (Directory.Exists(guideDataPath)) {
+                    Directory.Delete(guideDataPath, true);
+                }
+
+                Directory.CreateDirectory(guideDataPath);
 
                 foreach (AppExConfig.GuidePage page in listBoxPages.Items.Cast<AppExConfig.GuidePage>()) {
                     if (page.file != null) {
                         string relativeFilePath = Path.GetFileName(page.file);
-                        File.Copy(page.file, Path.Combine(folderBrowserDialog.SelectedPath, relativeFilePath));
-                        page.file = relativeFilePath;
+                        File.Copy(page.file, Path.Combine(guideDataPath, relativeFilePath));
+                        page.file = "Guide/" + relativeFilePath;
                     }
                 }
 

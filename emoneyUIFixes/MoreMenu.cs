@@ -576,6 +576,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
                     localPosition = new Vector3(0, -51, 0)
                 }
             };
+            guideImage.transform.SetAsFirstSibling();
             RectTransform rt = guideImage.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(Plugin.GuideData.width, Plugin.GuideData.height);
 
