@@ -436,7 +436,6 @@ partial class FormMain {
         // 
         // textBoxFile
         // 
-        textBoxFile.Enabled = false;
         textBoxFile.Location = new System.Drawing.Point(130, 106);
         textBoxFile.Name = "textBoxFile";
         textBoxFile.Size = new System.Drawing.Size(269, 31);
