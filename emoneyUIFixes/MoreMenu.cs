@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Apm.Emoney.Ui;
 using Emoney.SharedMemory;
@@ -100,7 +101,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
                     return;
                 case State.SelectAction: {
                     header.GetComponent<Animator>().SetTrigger("Show");
-                    HeaderText = "More Options";
+                    HeaderText = DateTime.Now.ToString(CultureInfo.CurrentCulture);
                     itemButtons.SetActive(true);
 
                     bool atLeastOneAppExEnabled = Plugin.AppExConfig.exit.kill && Plugin.AppExConfig.exit.kill_process_name_list?.Length > 0;
