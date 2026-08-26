@@ -267,6 +267,7 @@ partial class FormMain {
         // 
         // groupBoxPageData
         // 
+        groupBoxPageData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left));
         groupBoxPageData.Controls.Add(groupBoxElement);
         groupBoxPageData.Controls.Add(textBoxTitle);
         groupBoxPageData.Controls.Add(label4);
@@ -279,6 +280,8 @@ partial class FormMain {
         groupBoxPageData.Controls.Add(groupBox2);
         groupBoxPageData.Enabled = false;
         groupBoxPageData.Location = new System.Drawing.Point(258, 36);
+        groupBoxPageData.MaximumSize = new System.Drawing.Size(1100, 9999);
+        groupBoxPageData.MinimumSize = new System.Drawing.Size(1100, 452);
         groupBoxPageData.Name = "groupBoxPageData";
         groupBoxPageData.Size = new System.Drawing.Size(1100, 452);
         groupBoxPageData.TabIndex = 3;
@@ -498,6 +501,8 @@ partial class FormMain {
         Controls.Add(groupBox1);
         Controls.Add(menuStrip1);
         MainMenuStrip = menuStrip1;
+        MaximumSize = new System.Drawing.Size(1392, 9999);
+        MinimumSize = new System.Drawing.Size(1392, 556);
         StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         Text = "GameGuideEditor";
         FormClosing += FormMain_FormClosing;

@@ -34,6 +34,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{05B490E7-32A7-4426-A113-2F1A50971F11}"
 	ProjectSection(SolutionItems) = preProject
 		Readme\preview.jpg = Readme\preview.jpg
+		Readme\Twvsfyc3LI.png = Readme\Twvsfyc3LI.png
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APMMenuTranslation", "APMMenuTranslation\APMMenuTranslation.csproj", "{7121641F-8085-456F-A5A9-1F98DD495CA5}"

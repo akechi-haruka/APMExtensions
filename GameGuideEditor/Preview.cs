@@ -25,8 +25,9 @@ public partial class Preview : Form {
     }
 
     public void Redraw(AppExConfig.GuideInfo data, AppExConfig.GuidePage currentPage) {
+        Rectangle screenRectangle = RectangleToScreen(ClientRectangle);
         Width = data.width;
-        Height = data.height;
+        Height = data.height + (screenRectangle.Top - Top);
         page = currentPage;
         Text = "Preview" + (currentPage != null ? ": " + currentPage.title : "");
         Refresh();
@@ -38,6 +39,7 @@ public partial class Preview : Form {
 
             int drawWidth = Width;
             int drawHeight = Height - (screenRectangle.Top - Top);
+            ;
 
             if (page.file != null && !page.file.EndsWith(".txt")) {
                 if (!imageCache.TryGetValue(page.file, out Image image)) {
@@ -84,11 +86,10 @@ public partial class Preview : Form {
                 float x = btn.center ? btn.x - btn.width / 2F : btn.x;
                 float y = btn.center ? btn.y - btn.height / 2F : btn.y;
 
-                SizeF buttonTextSize = e.Graphics.MeasureString(text, fontGuideText, PointF.Empty, buttonTextFormat);
                 string buttonText = StripUnityFormattingTags().Replace(btn.text ?? "", "");
 
                 e.Graphics.FillRectangle(buttonBlue, new RectangleF(x, y, btn.width, btn.height));
-                e.Graphics.DrawString(buttonText, fontButtonText, white, new PointF(x + buttonTextSize.Width / 2F + btn.width / 2F, y + buttonTextSize.Height / 2F + btn.height / 2F), buttonTextFormat);
+                e.Graphics.DrawString(buttonText, fontButtonText, white, new PointF(x + btn.width / 2F, y + btn.height / 2F), buttonTextFormat);
             }
         }
     }

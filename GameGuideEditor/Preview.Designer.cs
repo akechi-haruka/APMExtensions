@@ -38,6 +38,7 @@ partial class Preview {
         ControlBox = false;
         DoubleBuffered = true;
         FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+        ShowInTaskbar = false;
         Text = "Preview";
         ResumeLayout(false);
     }
