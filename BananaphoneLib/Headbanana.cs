@@ -178,6 +178,8 @@ namespace Haruka.Arcade.Apm.BananaphoneLib {
             if (channel != null) {
                 switch (part.Name) {
                     case nameof(SoundVolume.VolumeControlName.Front):
+                    case "Volume":
+                    case "Lautsprecher": // TODO: this needs a better solution
                         Headbanana.Log("Front channel found: " + part.GlobalId);
                         channels[VolumeType.Front] = channel;
                         break;
