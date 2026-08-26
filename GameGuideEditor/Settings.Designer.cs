@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace GameGuideEditor;
+namespace Haruka.Arcade.Apm.GameGuideEditor;
 
 partial class Settings {
     /// <summary>

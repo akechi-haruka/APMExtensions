@@ -105,7 +105,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
 
                     bool atLeastOneAppExEnabled = Plugin.AppExConfig.exit.kill && Plugin.AppExConfig.exit.kill_process_name_list?.Length > 0;
 
-                    SpawnButton(itemButtons, "Game Guide", Plugin.GuideData.pages?.Count > 0, ActionGameGuide);
+                    SpawnButton(itemButtons, "Game Guide", Plugin.GuideData.pages?.Length > 0, ActionGameGuide);
                     SpawnButton(itemButtons, "Cabinet\nLights", Plugin.AllowLedControl, ActionCabinetLights);
                     SpawnButton(itemButtons, "Cabinet\nSpeakers", Plugin.ConfigSpeakerAdjustmentEnabled.Value, ActionSpeakerVolume);
                     SpawnButton(itemButtons, "Audio Mode", Plugin.ConfigSpeakerAdjustmentEnabled.Value, ActionAudioMode);
@@ -383,17 +383,17 @@ namespace Haruka.Arcade.Apm.EMUICF {
         #region Game Guide
 
         private void ChangeGuidePage(int pageNumber) {
-            List<AppExConfig.GuidePage> pages = Plugin.GuideData.pages;
+            AppExConfig.GuidePage[] pages = Plugin.GuideData.pages;
 
-            if (pageNumber < 0 || pageNumber >= pages.Count) {
-                Plugin.Log.LogWarning("Guide page out of range: " + pageNumber + "/" + pages.Count);
+            if (pageNumber < 0 || pageNumber >= pages.Length) {
+                Plugin.Log.LogWarning("Guide page out of range: " + pageNumber + "/" + pages.Length);
                 return;
             }
 
             AppExConfig.GuidePage page = pages[pageNumber];
 
             header.GetComponent<Animator>().SetTrigger("Show");
-            HeaderText = page.title + " (" + (pageNumber + 1) + "/" + pages.Count + ")";
+            HeaderText = page.title + " (" + (pageNumber + 1) + "/" + pages.Length + ")";
 
             GuideText = page.text ?? "";
 
@@ -464,7 +464,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
             }
 
             prevGuidePageButton.GetComponent<Button>().interactable = pageNumber > 0;
-            nextGuidePageButton.GetComponent<Button>().interactable = pageNumber < pages.Count - 1;
+            nextGuidePageButton.GetComponent<Button>().interactable = pageNumber < pages.Length - 1;
 
             currentGuidePage = pageNumber;
 

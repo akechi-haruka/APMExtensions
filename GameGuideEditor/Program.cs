@@ -1,6 +1,6 @@
 using System.Drawing.Text;
 
-namespace GameGuideEditor;
+namespace Haruka.Arcade.Apm.GameGuideEditor;
 
 static class Program {
     public const String SEGA_FONT = "SEGA-NewRodinN B";

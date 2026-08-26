@@ -1,4 +1,4 @@
-﻿namespace GameGuideEditor;
+﻿namespace Haruka.Arcade.Apm.GameGuideEditor;
 
 partial class FormMain {
     /// <summary>
@@ -25,6 +25,7 @@ partial class FormMain {
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
         menuStrip1 = new System.Windows.Forms.MenuStrip();
         fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +48,17 @@ partial class FormMain {
         buttonButtonAdd = new System.Windows.Forms.Button();
         groupBoxPageData = new System.Windows.Forms.GroupBox();
         groupBoxElement = new System.Windows.Forms.GroupBox();
+        label7 = new System.Windows.Forms.Label();
+        comboBoxElementTarget = new System.Windows.Forms.ComboBox();
+        checkBoxElementCenter = new System.Windows.Forms.CheckBox();
+        label6 = new System.Windows.Forms.Label();
+        textBoxElementText = new System.Windows.Forms.TextBox();
+        numericUpDownElementH = new System.Windows.Forms.NumericUpDown();
+        numericUpDownElementW = new System.Windows.Forms.NumericUpDown();
+        label5 = new System.Windows.Forms.Label();
+        numericUpDownElementY = new System.Windows.Forms.NumericUpDown();
+        numericUpDownElementX = new System.Windows.Forms.NumericUpDown();
+        label2 = new System.Windows.Forms.Label();
         textBoxTitle = new System.Windows.Forms.TextBox();
         label4 = new System.Windows.Forms.Label();
         buttonBrowseFile = new System.Windows.Forms.Button();
@@ -61,6 +73,11 @@ partial class FormMain {
         groupBox1.SuspendLayout();
         groupBox2.SuspendLayout();
         groupBoxPageData.SuspendLayout();
+        groupBoxElement.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementH).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementW).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementY).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementX).BeginInit();
         SuspendLayout();
         // 
         // menuStrip1
@@ -82,41 +99,46 @@ partial class FormMain {
         // 
         // newToolStripMenuItem
         // 
+        newToolStripMenuItem.Image = ((System.Drawing.Image)resources.GetObject("newToolStripMenuItem.Image"));
         newToolStripMenuItem.Name = "newToolStripMenuItem";
-        newToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        newToolStripMenuItem.Size = new System.Drawing.Size(165, 34);
         newToolStripMenuItem.Text = "New";
         newToolStripMenuItem.Click += newToolStripMenuItem_Click_1;
         // 
         // openToolStripMenuItem
         // 
+        openToolStripMenuItem.Image = ((System.Drawing.Image)resources.GetObject("openToolStripMenuItem.Image"));
         openToolStripMenuItem.Name = "openToolStripMenuItem";
-        openToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        openToolStripMenuItem.Size = new System.Drawing.Size(165, 34);
         openToolStripMenuItem.Text = "Open";
         openToolStripMenuItem.Click += openToolStripMenuItem_Click;
         // 
         // saveToolStripMenuItem
         // 
+        saveToolStripMenuItem.Image = ((System.Drawing.Image)resources.GetObject("saveToolStripMenuItem.Image"));
         saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-        saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        saveToolStripMenuItem.Size = new System.Drawing.Size(165, 34);
         saveToolStripMenuItem.Text = "Save";
         saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
         // 
         // exportToolStripMenuItem
         // 
+        exportToolStripMenuItem.Image = ((System.Drawing.Image)resources.GetObject("exportToolStripMenuItem.Image"));
         exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-        exportToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        exportToolStripMenuItem.Size = new System.Drawing.Size(165, 34);
         exportToolStripMenuItem.Text = "Export";
         exportToolStripMenuItem.Click += exportToolStripMenuItem_Click;
         // 
         // toolStripSeparator1
         // 
         toolStripSeparator1.Name = "toolStripSeparator1";
-        toolStripSeparator1.Size = new System.Drawing.Size(267, 6);
+        toolStripSeparator1.Size = new System.Drawing.Size(162, 6);
         // 
         // exitToolStripMenuItem
         // 
+        exitToolStripMenuItem.Image = ((System.Drawing.Image)resources.GetObject("exitToolStripMenuItem.Image"));
         exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-        exitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        exitToolStripMenuItem.Size = new System.Drawing.Size(165, 34);
         exitToolStripMenuItem.Text = "Exit";
         exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
         // 
@@ -129,9 +151,11 @@ partial class FormMain {
         // 
         // settingsToolStripMenuItem
         // 
+        settingsToolStripMenuItem.Image = ((System.Drawing.Image)resources.GetObject("settingsToolStripMenuItem.Image"));
         settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
         settingsToolStripMenuItem.Size = new System.Drawing.Size(178, 34);
         settingsToolStripMenuItem.Text = "Settings";
+        settingsToolStripMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
         settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click_1;
         // 
         // saveFileDialog
@@ -263,6 +287,17 @@ partial class FormMain {
         // 
         // groupBoxElement
         // 
+        groupBoxElement.Controls.Add(label7);
+        groupBoxElement.Controls.Add(comboBoxElementTarget);
+        groupBoxElement.Controls.Add(checkBoxElementCenter);
+        groupBoxElement.Controls.Add(label6);
+        groupBoxElement.Controls.Add(textBoxElementText);
+        groupBoxElement.Controls.Add(numericUpDownElementH);
+        groupBoxElement.Controls.Add(numericUpDownElementW);
+        groupBoxElement.Controls.Add(label5);
+        groupBoxElement.Controls.Add(numericUpDownElementY);
+        groupBoxElement.Controls.Add(numericUpDownElementX);
+        groupBoxElement.Controls.Add(label2);
         groupBoxElement.Enabled = false;
         groupBoxElement.Location = new System.Drawing.Point(720, 30);
         groupBoxElement.Name = "groupBoxElement";
@@ -270,6 +305,107 @@ partial class FormMain {
         groupBoxElement.TabIndex = 13;
         groupBoxElement.TabStop = false;
         groupBoxElement.Text = "Element Data";
+        // 
+        // label7
+        // 
+        label7.AutoSize = true;
+        label7.Location = new System.Drawing.Point(6, 185);
+        label7.Name = "label7";
+        label7.Size = new System.Drawing.Size(47, 25);
+        label7.TabIndex = 10;
+        label7.Text = "Link:";
+        // 
+        // comboBoxElementTarget
+        // 
+        comboBoxElementTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        comboBoxElementTarget.FormattingEnabled = true;
+        comboBoxElementTarget.Location = new System.Drawing.Point(98, 182);
+        comboBoxElementTarget.Name = "comboBoxElementTarget";
+        comboBoxElementTarget.Size = new System.Drawing.Size(270, 33);
+        comboBoxElementTarget.TabIndex = 9;
+        comboBoxElementTarget.SelectedIndexChanged += comboBoxElementTarget_SelectedIndexChanged;
+        // 
+        // checkBoxElementCenter
+        // 
+        checkBoxElementCenter.AutoSize = true;
+        checkBoxElementCenter.Location = new System.Drawing.Point(6, 147);
+        checkBoxElementCenter.Name = "checkBoxElementCenter";
+        checkBoxElementCenter.Size = new System.Drawing.Size(109, 29);
+        checkBoxElementCenter.TabIndex = 8;
+        checkBoxElementCenter.Text = "Centered";
+        checkBoxElementCenter.UseVisualStyleBackColor = true;
+        checkBoxElementCenter.CheckedChanged += checkBoxElementCenter_CheckedChanged;
+        // 
+        // label6
+        // 
+        label6.AutoSize = true;
+        label6.Location = new System.Drawing.Point(6, 113);
+        label6.Name = "label6";
+        label6.Size = new System.Drawing.Size(46, 25);
+        label6.TabIndex = 7;
+        label6.Text = "Text:";
+        // 
+        // textBoxElementText
+        // 
+        textBoxElementText.Location = new System.Drawing.Point(188, 110);
+        textBoxElementText.Name = "textBoxElementText";
+        textBoxElementText.Size = new System.Drawing.Size(180, 31);
+        textBoxElementText.TabIndex = 6;
+        textBoxElementText.TextChanged += textBoxElementText_TextChanged;
+        // 
+        // numericUpDownElementH
+        // 
+        numericUpDownElementH.Location = new System.Drawing.Point(281, 73);
+        numericUpDownElementH.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+        numericUpDownElementH.Name = "numericUpDownElementH";
+        numericUpDownElementH.Size = new System.Drawing.Size(87, 31);
+        numericUpDownElementH.TabIndex = 5;
+        numericUpDownElementH.ValueChanged += numericUpDownElementH_ValueChanged;
+        // 
+        // numericUpDownElementW
+        // 
+        numericUpDownElementW.Location = new System.Drawing.Point(188, 73);
+        numericUpDownElementW.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+        numericUpDownElementW.Name = "numericUpDownElementW";
+        numericUpDownElementW.Size = new System.Drawing.Size(87, 31);
+        numericUpDownElementW.TabIndex = 4;
+        numericUpDownElementW.ValueChanged += numericUpDownElementW_ValueChanged;
+        // 
+        // label5
+        // 
+        label5.AutoSize = true;
+        label5.Location = new System.Drawing.Point(6, 75);
+        label5.Name = "label5";
+        label5.Size = new System.Drawing.Size(47, 25);
+        label5.TabIndex = 3;
+        label5.Text = "Size:";
+        // 
+        // numericUpDownElementY
+        // 
+        numericUpDownElementY.Location = new System.Drawing.Point(281, 30);
+        numericUpDownElementY.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+        numericUpDownElementY.Name = "numericUpDownElementY";
+        numericUpDownElementY.Size = new System.Drawing.Size(87, 31);
+        numericUpDownElementY.TabIndex = 2;
+        numericUpDownElementY.ValueChanged += numericUpDownElementY_ValueChanged;
+        // 
+        // numericUpDownElementX
+        // 
+        numericUpDownElementX.Location = new System.Drawing.Point(188, 30);
+        numericUpDownElementX.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+        numericUpDownElementX.Name = "numericUpDownElementX";
+        numericUpDownElementX.Size = new System.Drawing.Size(87, 31);
+        numericUpDownElementX.TabIndex = 1;
+        numericUpDownElementX.ValueChanged += numericUpDownElementX_ValueChanged;
+        // 
+        // label2
+        // 
+        label2.AutoSize = true;
+        label2.Location = new System.Drawing.Point(6, 32);
+        label2.Name = "label2";
+        label2.Size = new System.Drawing.Size(79, 25);
+        label2.TabIndex = 0;
+        label2.Text = "Position:";
         // 
         // textBoxTitle
         // 
@@ -374,9 +510,29 @@ partial class FormMain {
         groupBox2.PerformLayout();
         groupBoxPageData.ResumeLayout(false);
         groupBoxPageData.PerformLayout();
+        groupBoxElement.ResumeLayout(false);
+        groupBoxElement.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementH).EndInit();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementW).EndInit();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementY).EndInit();
+        ((System.ComponentModel.ISupportInitialize)numericUpDownElementX).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
+
+    private System.Windows.Forms.TextBox textBoxElementText;
+    private System.Windows.Forms.Label label6;
+    private System.Windows.Forms.CheckBox checkBoxElementCenter;
+    private System.Windows.Forms.ComboBox comboBoxElementTarget;
+    private System.Windows.Forms.Label label7;
+
+    private System.Windows.Forms.NumericUpDown numericUpDownElementH;
+    private System.Windows.Forms.NumericUpDown numericUpDownElementW;
+    private System.Windows.Forms.Label label5;
+
+    private System.Windows.Forms.Label label2;
+    private System.Windows.Forms.NumericUpDown numericUpDownElementX;
+    private System.Windows.Forms.NumericUpDown numericUpDownElementY;
 
     private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
     private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;

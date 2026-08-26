@@ -1,4 +1,4 @@
-namespace GameGuideEditor;
+namespace Haruka.Arcade.Apm.GameGuideEditor;
 
 public static class ListBoxExtension {
     public static void MoveSelectedItemUp(this ListBox listBox) {

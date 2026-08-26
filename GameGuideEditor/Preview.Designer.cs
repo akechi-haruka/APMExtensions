@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace GameGuideEditor;
+namespace Haruka.Arcade.Apm.GameGuideEditor;
 
 partial class Preview {
     /// <summary>
@@ -33,8 +33,10 @@ partial class Preview {
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        BackColor = System.Drawing.Color.Black;
         ClientSize = new System.Drawing.Size(800, 450);
         ControlBox = false;
+        DoubleBuffered = true;
         FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
         Text = "Preview";
         ResumeLayout(false);

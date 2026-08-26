@@ -56,6 +56,7 @@ New-Item -Path $LauncherRoot\amfs -ItemType Directory
 Copy-Item Resources\ICF1 $LauncherRoot\amfs
 
 Copy-Item -Recurse UtilityGames $ReleasePath
+Copy-Item -Recurse GameGuideEditor\bin\Release\net10.0-windows $ReleasePath\GameGuideEditor
 
 Write-Output Packaging...
 Compress-Archive -Force -Path $ReleasePath\* -DestinationPath $OutputFile

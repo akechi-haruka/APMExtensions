@@ -1,4 +1,4 @@
-namespace GameGuideEditor;
+namespace Haruka.Arcade.Apm.GameGuideEditor;
 
 public partial class Settings : Form {
     public int SelectedWidth { get; private set; }
