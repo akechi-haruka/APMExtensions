@@ -1,12 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Build &amp; Package" type="PowerShellRunType" factoryName="PowerShell"
-                   scriptUrl="BuildPackage.ps1" workingDirectory="$SolutionDir$"
-                   executablePath="C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe">
-        <envs/>
-        <method v="2">
-            <option name="Build Solution" enabled="true"/>
-            <option name="RunConfigurationTask" enabled="true" run_configuration_name="EXMoney"
-                    run_configuration_type="DotNetFolderPublish"/>
-        </method>
-    </configuration>
+  <configuration default="false" name="Build &amp; Package" type="PowerShellRunType" factoryName="PowerShell"
+                 scriptUrl="BuildPackage.ps1" workingDirectory="$SolutionDir$"
+                 executablePath="C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe">
+    <envs/>
+    <method v="2">
+      <option name="Build Solution" enabled="true"/>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="EXMoney"
+              run_configuration_type="DotNetFolderPublish"/>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Build MkDocs"
+              run_configuration_type="BatchConfigurationType"/>
+    </method>
+  </configuration>
 </component>
