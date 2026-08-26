@@ -18,7 +18,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
         [Serializable]
         public class Exit {
             public bool kill;
-            public String[] kill_process_name_list = new String[0];
+            public String[] kill_process_name_list = Array.Empty<string>();
         }
 
         [Serializable]

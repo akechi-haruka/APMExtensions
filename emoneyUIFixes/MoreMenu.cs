@@ -31,7 +31,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
         private float? timeRemaining;
         private State menuState;
         private int currentGuidePage;
-        private Color currentLedColor;
+        private Color? currentLedColor;
 
         private State MenuState {
             set {
@@ -164,7 +164,12 @@ namespace Haruka.Arcade.Apm.EMUICF {
 
                     AppExConfig.LedSettings settings = Plugin.AppExConfig.led;
 
-                    SetLedUi(settings.r / 255F, settings.g / 255F, settings.b / 255F, true);
+                    if (currentLedColor == null) {
+                        currentLedColor = new Color(settings.r / 255F, settings.g / 255F, settings.b / 255F);
+                    }
+
+                    Color c = currentLedColor.Value;
+                    SetLedUi(c.r, c.g, c.b, true);
 
                     itemButtons.SetActive(false);
                     ledSubFrame.SetActive(true);
@@ -333,7 +338,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
 
         public void SetLedUi(float r, float g, float b, bool setSliders = false) {
             currentLedColor = new Color(r, g, b);
-            header.GetComponent<Image>().color = currentLedColor;
+            header.GetComponent<Image>().color = currentLedColor.Value;
 
             UpdateSlider(ledSliderR.transform, ledValueR.transform, r, setSliders);
             UpdateSlider(ledSliderG.transform, ledValueG.transform, g, setSliders);
@@ -353,18 +358,24 @@ namespace Haruka.Arcade.Apm.EMUICF {
         }
 
         private void OnLedRgbChangeR(float value) {
-            SetLedUi(value / 100F, currentLedColor.g, currentLedColor.b);
-            Plugin.LedManager.Set(currentLedColor);
+            if (currentLedColor != null) {
+                SetLedUi(value / 100F, currentLedColor.Value.g, currentLedColor.Value.b);
+                Plugin.LedManager.Set(currentLedColor.Value);
+            }
         }
 
         private void OnLedRgbChangeG(float value) {
-            SetLedUi(currentLedColor.r, value / 100F, currentLedColor.b);
-            Plugin.LedManager.Set(currentLedColor);
+            if (currentLedColor != null) {
+                SetLedUi(currentLedColor.Value.r, value / 100F, currentLedColor.Value.b);
+                Plugin.LedManager.Set(currentLedColor.Value);
+            }
         }
 
         private void OnLedRgbChangeB(float value) {
-            SetLedUi(currentLedColor.r, currentLedColor.g, value / 100F);
-            Plugin.LedManager.Set(currentLedColor);
+            if (currentLedColor != null) {
+                SetLedUi(currentLedColor.Value.r, currentLedColor.Value.g, value / 100F);
+                Plugin.LedManager.Set(currentLedColor.Value);
+            }
         }
 
         #endregion
