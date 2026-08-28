@@ -90,7 +90,7 @@ namespace Haruka.Arcade.Apm.EMUICF {
             ReloadAppEx();
             ReloadGeneralSettings();
 
-            if (ApmGeneralSetting.ledSetting?.portNumber > 0 && ConfigEnableLedControl.Value) {
+            if (ApmGeneralSetting.ledSetting?.portNumber > 0 && ConfigEnableLedControl.Value && AppExConfig.led.claim) {
                 try {
                     LedManager = new LedManager(Log, ApmGeneralSetting.ledSetting.portNumber);
                     LedManager.Connect();
